@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Product } from './connection/database/entities/Products';
 import { ProductsModule } from './business/products/products.module';
+import { ProductType } from './business/product_types/entities/product_type.entity';
+import { ProductTypesModule } from './business/product_types/product_types.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -13,10 +14,11 @@ import { ProductsModule } from './business/products/products.module';
       username: 'postgres',
       password: 'password',
       database: 'test',
-      entities: [Product],
+      entities: [ProductType],
       synchronize: true,
     }),
     ProductsModule,
+    ProductTypesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
