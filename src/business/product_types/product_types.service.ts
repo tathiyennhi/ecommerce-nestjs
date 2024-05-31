@@ -19,19 +19,16 @@ export class ProductTypesService {
       await this.repository.save(createProductTypeDto);
       return true;
     } catch (error) {
-      return false;
+      return false; 
     }
-    return 'This action adds a new productType';
   }
 
   findAll() {
     return this.repository.find();
-    return `This action returns all productTypes`;
   }
 
   findOne(id: number) {
     return this.repository.findOneBy({ id });
-    return `This action returns a #${id} productType`;
   }
 
   update(id: number, updateProductTypeDto: UpdateProductTypeDto) {
