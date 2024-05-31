@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductsModule } from './business/products/products.module';
-import { ProductType } from './business/product_types/entities/product_type.entity';
-import { ProductTypesModule } from './business/product_types/product_types.module';
-import { Product } from './business/products/entities/product.entity';
+import { ProductModule } from './business/product/products.module';
+import { ProductType } from './business/product-type/entities/product-type.entity';
+import { ProductTypeModule } from './business/product-type/product-type.module';
+import { Product } from './business/product/entities/product.entity';
+import { ChildProductModule } from './business/child-product/child-product.module';
+import { MenuModule } from './business/menu/menu.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -18,8 +20,10 @@ import { Product } from './business/products/entities/product.entity';
       entities: [ProductType, Product],
       synchronize: true,
     }),
-    ProductsModule,
-    ProductTypesModule,
+    ProductModule,
+    ProductTypeModule,
+    ChildProductModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [AppService],
