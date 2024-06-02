@@ -1,12 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Base } from 'src/common/entities/base';
+import { Entity, Column } from 'typeorm';
 
 @Entity()
-export class ProductType {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class ProductType extends Base {
+  @Column()
+  category_id: string;
 
   @Column()
-  name: string;
+  display_content: string;
 
   @Column()
   description: string;

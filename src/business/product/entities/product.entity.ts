@@ -1,15 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Base } from 'src/common/entities/base';
+import { Entity, Column } from 'typeorm';
 
 @Entity()
-export class Product {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Product extends Base {
   @Column()
   name: string;
 
   @Column()
-  product_type: string; // Áo thun || áo dự tiệc || váy ... -->
+  product_type_id: string;
 
   @Column()
   price: number;
@@ -21,5 +19,11 @@ export class Product {
   description: string;
 
   @Column()
-  image_link: string;
+  click_count: string;
+
+  @Column()
+  remained_qtt: string;
+
+  @Column()
+  sell_off_info: string;
 }
