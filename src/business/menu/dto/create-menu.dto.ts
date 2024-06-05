@@ -1,10 +1,9 @@
+import { IsString } from 'class-validator';
+
 export class CreateMenuDto {
-    id: string;
-    name: string;
-    // category: string;
-    description: string;
-    created_at: string;
-    updated_at: string;
-    updated_by: string;
-    created_by: string;
+//   @IsString()
+//   id: string;
+
+  @IsString()
+  name: string;
 }

@@ -12,11 +12,11 @@ import { MenuModule } from './business/menu/menu.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '127.0.0.1',
+      host: 'localhost',
       port: 5432,
       username: 'postgres',
       password: 'password',
-      database: 'test',
+      database: 'test11',
       entities: [ProductType, Product],
       synchronize: true,
     }),

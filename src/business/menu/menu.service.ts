@@ -7,14 +7,13 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class MenuService {
-
   constructor(
     @InjectRepository(Menu)
-    private rrepository: Repository<Menu>,
+    private repository: Repository<Menu>,
   ) {}
 
   async create(createMenuDto: CreateMenuDto) {
-    await this.rrepository.save(createMenuDto);
+    await this.repository.save(createMenuDto);
     return true;
   }
 
@@ -27,6 +26,7 @@ export class MenuService {
   }
 
   update(id: number, updateMenuDto: UpdateMenuDto) {
+    this.repository.update(id, updateMenuDto);
     return `This action updates a #${id} menu`;
   }
 

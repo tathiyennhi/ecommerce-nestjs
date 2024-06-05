@@ -27,16 +27,16 @@ export class ProductTypesService {
     return this.repository.find();
   }
 
-  findOne(id: number) {
-    return this.repository.findOneBy({ id });
+  findOne(id: any) {
+    return this.repository.findOneBy(id);
   }
 
-  update(id: number, updateProductTypeDto: UpdateProductTypeDto) {
-    this.repository.update({ id }, updateProductTypeDto);
+  update(id: any, updateProductTypeDto: UpdateProductTypeDto) {
+    this.repository.update(id, updateProductTypeDto);
     return `This action updates a #${id} productType`;
   }
 
-  remove(id: number) {
+  remove(id: any) {
     this.repository.delete(id);
     return `This action removes a #${id} productType`;
   }
