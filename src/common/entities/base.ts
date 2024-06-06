@@ -4,18 +4,18 @@ export class Base {
     @PrimaryGeneratedColumn("uuid")
     id: string;
   
-    @Column()
+    @Column({ nullable: true})
     description: string;
 
-    @Column()
+    @Column({ nullable: true})
     created_at: string;
 
-    @Column()
+    @Column({ nullable: true})
     updated_at: string;
 
-    @Column()
+    @Column({ nullable: true})
     updated_by: string;
 
-    @Column()
+    @Column({ nullable: true})
     created_by: string;
 }
