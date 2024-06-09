@@ -2,12 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductModule } from './business/product/products.module';
-import { ProductTypeModule } from './business/product-type/product-type.module';
-import { ChildProductModule } from './business/child-product/child-product.module';
-import { MenuModule } from './business/menu/menu.module';
+import { ProductModule } from './modules/product/products.module';
+import { ProductTypeModule } from './modules/product-type/product-type.module';
+// import { ChildProductModule } from './modules/child-product/child-product.module';
+import { MenuModule } from './modules/menu/menu.module';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersController } from './modules/user/users.controller';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -18,7 +20,7 @@ import * as winston from 'winston';
       password: 'password',
       database: 'test-db',
       // entities: [Menu, ProductType, Product, Category],
-      entities: [__dirname + '/business/../**/*.entity.{js,ts}'],
+      entities: [__dirname + '/modules/../**/*.entity.{js,ts}'],
       synchronize: true,
     }),
     WinstonModule.forRoot({
@@ -54,8 +56,9 @@ import * as winston from 'winston';
     }),
     ProductModule,
     ProductTypeModule,
-    ChildProductModule,
+    // ChildProductModule,
     MenuModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

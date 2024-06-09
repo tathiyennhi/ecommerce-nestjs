@@ -1,9 +1,9 @@
-import { Category } from 'src/business/category/entities/category.entity';
-import { Base } from 'src/common/entities/base';
+import { Category } from 'src/modules/category/entities/category.entity';
+import { Base } from 'src/common/base-entities/base';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Menu extends Base{
+export class Menu extends Base {
   @Column()
   name: string;
 

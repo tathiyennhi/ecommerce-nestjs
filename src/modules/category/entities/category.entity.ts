@@ -1,5 +1,5 @@
-import { Menu } from "src/business/menu/entities/menu.entity";
-import { Base } from "src/common/entities/base";
+import { Menu } from "src/modules/menu/entities/menu.entity";
+import { Base } from "src/common/base-entities/base";
 import { Column, Entity, ManyToOne } from "typeorm";
 
 @Entity()
