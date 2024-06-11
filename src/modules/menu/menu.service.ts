@@ -14,15 +14,24 @@ export class MenuService {
 
   async create(createMenuDto: CreateMenuDto) {
     await this.repository.save(createMenuDto);
+
     return true;
   }
 
   findAll() {
-    return `This action returns all menu`;
+    return this.repository.find(
+      {
+      relations: ['categories', 'categories.product_type'], // '
+    }
+  );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} menu`;
+  async findOne(id: any) {
+    return await this.repository.findOne({
+      where: {
+        id
+      }
+    });
   }
 
   update(id: number, updateMenuDto: UpdateMenuDto) {

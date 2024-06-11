@@ -10,6 +10,8 @@ import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersController } from './modules/user/users.controller';
+import { ChildProductModule } from './modules/child-product/child-product.module';
+import { CategoryModule } from './modules/category/category.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -56,7 +58,8 @@ import { UsersController } from './modules/user/users.controller';
     }),
     ProductModule,
     ProductTypeModule,
-    // ChildProductModule,
+    ChildProductModule,
+    CategoryModule,
     MenuModule,
     AuthModule
   ],

@@ -8,5 +8,5 @@ export class Menu extends Base {
   name: string;
 
   @OneToMany(() => Category, (category) => category.menu)
-  category: Category[];
+  categories: Category[];
 }
