@@ -44,7 +44,6 @@ export class CategoryService {
       throw new InternalServerErrorException('Failed to create category');
     }
   }
-  }
   // async create(createCategoryDto: CreateCategoryDto) {
   //   try {
   //     // find menuId

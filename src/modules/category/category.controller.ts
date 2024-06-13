@@ -19,7 +19,6 @@ export class CategoryController {
       // Xử lý các lỗi không mong đợi khác
       throw new BadRequestException('Unexpected error occurred');
     }
-  }
     // return this.categoryService.create(createCategoryDto);
   }
 
