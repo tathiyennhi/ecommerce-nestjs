@@ -1,4 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateMenuDto } from './create-menu.dto';
+import { IsString } from "class-validator";
 
-export class UpdateMenuDto extends PartialType(CreateMenuDto) {}
+export class UpdateMenuDto {
+  @IsString()
+  name: string;
+}

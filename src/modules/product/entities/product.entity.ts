@@ -1,7 +1,7 @@
-import { Base } from 'src/common/base-entities/base';
-import { ChildProduct } from 'src/modules/child-product/entities/child-product.entity';
-import { ProductType } from 'src/modules/product-type/entities/product-type.entity';
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Base } from "src/common/base-entities/base";
+import { ChildProduct } from "src/modules/child-product/entities/child-product.entity";
+import { ProductType } from "src/modules/product-type/entities/product-type.entity";
+import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class Product extends Base {

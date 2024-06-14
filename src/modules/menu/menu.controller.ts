@@ -8,21 +8,23 @@ import {
   Delete,
   Logger,
   Inject,
-} from '@nestjs/common';
-import { MenuService } from './menu.service';
-import { CreateMenuDto } from './dto/create-menu.dto';
-import { UpdateMenuDto } from './dto/update-menu.dto';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+  InternalServerErrorException,
+} from "@nestjs/common";
+import { MenuService } from "./menu.service";
+import { CreateMenuDto } from "./dto/create-menu.dto";
+import { UpdateMenuDto } from "./dto/update-menu.dto";
+import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 
-@Controller('menu')
+@Controller("menu")
 export class MenuController {
-  constructor(private readonly menuService: MenuService,
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger
+  constructor(
+    private readonly menuService: MenuService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   @Post()
   create(@Body() createMenuDto: CreateMenuDto) {
-    this.logger.error('testtt');
+    // this.logger.error("testtt");
     return this.menuService.create(createMenuDto);
   }
 
@@ -31,18 +33,22 @@ export class MenuController {
     return this.menuService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.menuService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
-    return this.menuService.update(+id, updateMenuDto);
+  @Patch(":id")
+  update(@Param("id") id: string, @Body() updateMenuDto: UpdateMenuDto) {
+    try {
+      return this.menuService.update(id, updateMenuDto);
+    } catch (error) {
+      throw new InternalServerErrorException("Failed to update menu");
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.menuService.remove(+id);
+  @Delete(":id")
+  remove(@Param("id") id: string) {
+    return this.menuService.remove(id);
   }
 }

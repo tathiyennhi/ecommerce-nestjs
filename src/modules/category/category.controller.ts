@@ -8,7 +8,7 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
+  async create(@Body() createCategoryDto: CreateCategoryDto) {
     try {
       return await this.categoryService.create(createCategoryDto);
     } catch (error) {
@@ -17,7 +17,7 @@ export class CategoryController {
         throw error; // Ném lại lỗi từ service nếu đã được định dạng
       }
       // Xử lý các lỗi không mong đợi khác
-      throw new BadRequestException('Unexpected error occurred');
+      throw new BadRequestException("Unexpected error occurred");
     }
     // return this.categoryService.create(createCategoryDto);
   }
