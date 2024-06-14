@@ -1,7 +1,9 @@
 import { Base } from "src/common/base-entities/base";
-import { PrimaryGeneratedColumn, Column } from "typeorm";
+import { Product } from "src/modules/product/entities/product.entity";
+import { Column, Entity, ManyToOne } from "typeorm";
 
-export class ChildProduct extends Base{
+@Entity()
+export class ChildProduct extends Base {
   @Column()
   name: string;
 
@@ -13,6 +15,9 @@ export class ChildProduct extends Base{
 
   @Column()
   color: number;
+
+  @Column()
+  size: string;
 
   @Column()
   quantity: number;
@@ -28,7 +33,6 @@ export class ChildProduct extends Base{
 
   // @Column()
   // is_default_image: string;
-
-  @Column()
-  size: string;
+  @ManyToOne(() => Product, (product) => product.child_products)
+  product: Product;
 }

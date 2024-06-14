@@ -18,5 +18,5 @@ export class Category extends Base {
     menu: Menu;
 
     @OneToMany(() => ProductType, (i) => i.category)
-    product_type: ProductType[];
+    product_types: ProductType[];
 }

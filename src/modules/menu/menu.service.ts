@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { CreateMenuDto } from './dto/create-menu.dto';
-import { UpdateMenuDto } from './dto/update-menu.dto';
-import { Menu } from './entities/menu.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { CreateMenuDto } from "./dto/create-menu.dto";
+import { UpdateMenuDto } from "./dto/update-menu.dto";
+import { Menu } from "./entities/menu.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class MenuService {
@@ -19,18 +19,21 @@ export class MenuService {
   }
 
   findAll() {
-    return this.repository.find(
-      {
-      relations: ['categories', 'categories.product_type'], // '
-    }
-  );
+    return this.repository.find({
+      relations: [
+        "categories",
+        "categories.product_types",
+        "categories.product_types.products",
+        "categories.product_types.products.child_products",
+      ],
+    });
   }
 
   async findOne(id: any) {
     return await this.repository.findOne({
       where: {
-        id
-      }
+        id,
+      },
     });
   }
 

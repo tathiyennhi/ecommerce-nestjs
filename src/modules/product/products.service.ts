@@ -16,7 +16,7 @@ export class ProductsService {
     try {
       console.log('This action adds a new product', createProductDto);
 
-      await this.productRepository.save(createProductDto);
+      // await this.productRepository.save(createProductDto);
       return true;
     } catch (error) {
       return error;
@@ -33,7 +33,7 @@ export class ProductsService {
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
-    this.productRepository.update(id, updateProductDto);
+    // this.productRepository.update(id, updateProductDto);
     return `This action updates a #${id} product`;
   }
 
