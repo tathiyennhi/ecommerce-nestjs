@@ -4,6 +4,7 @@ import { ValidationPipe } from "@nestjs/common";
 import * as winston from "winston";
 import { WinstonModule } from "nest-winston";
 import { AllExceptionsFilter } from "./common/exception-filters/all-exceptions";
+import { ResponseInterceptor } from "./common/interceptors/response";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -40,6 +41,8 @@ async function bootstrap() {
     }),
   });
   app.useGlobalPipes(new ValidationPipe());
+
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   const httpAdapter = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
