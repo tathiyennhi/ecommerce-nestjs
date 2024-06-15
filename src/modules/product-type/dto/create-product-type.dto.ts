@@ -1,4 +1,12 @@
+import { IsString } from "class-validator";
+
 export class CreateProductTypeDto {
-  name: string;
+  @IsString()
+  displayContent: string;
+
+  @IsString()
   description: string;
+
+  @IsString()
+  categoryId: string;
 }

@@ -8,13 +8,10 @@ export class ChildProduct extends Base {
   name: string;
 
   @Column()
-  product_id: string;
-
-  @Column()
   price: number;
 
   @Column()
-  color: number;
+  color: string;
 
   @Column()
   size: string;
@@ -23,16 +20,17 @@ export class ChildProduct extends Base {
   quantity: number;
 
   @Column()
-  description: string;
+  click_count: number;
 
   @Column()
-  click_count: string;
+  sell_off_info: string;
 
   @Column()
   image_link: string;
 
-  // @Column()
-  // is_default_image: string;
+  @Column()
+  is_default_product: string;
+
   @ManyToOne(() => Product, (product) => product.child_products)
   product: Product;
 }
