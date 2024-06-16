@@ -1,25 +1,48 @@
-import { Injectable } from '@nestjs/common';
-import { CreateProductTypeDto } from './dto/create-product-type.dto';
-import { UpdateProductTypeDto } from './dto/update-product-type.dto';
-import { ProductType } from './entities/product-type.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
+import { CreateProductTypeDto } from "./dto/create-product-type.dto";
+import { UpdateProductTypeDto } from "./dto/update-product-type.dto";
+import { ProductType } from "./entities/product-type.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { CategoryService } from "../category/category.service";
 
 @Injectable()
 export class ProductTypesService {
   constructor(
     @InjectRepository(ProductType)
     private repository: Repository<ProductType>,
+    private categoryService: CategoryService,
   ) {}
 
   async create(createProductTypeDto: CreateProductTypeDto) {
     try {
-      console.log('This action adds a new product', createProductTypeDto);
+      // Kiểm tra xem menu có tồn tại không
+      const cate = await this.categoryService.findOne(
+        createProductTypeDto.categoryId,
+      );
+      if (!cate) {
+        throw new NotFoundException("Catefory not found");
+      }
 
-      await this.repository.save(createProductTypeDto);
-      return true;
+      // Tạo mới product type
+      const neww = this.repository.create({
+        display_content: createProductTypeDto.displayContent,
+        description: createProductTypeDto.description,
+        category: cate,
+      });
+
+      // Lưu product type vào database
+      return await this.repository.save(neww);
     } catch (error) {
-      return false;
+      // Xử lý lỗi cụ thể hoặc ném ra lỗi đã được chuẩn hóa
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException("Failed to create category");
     }
   }
 
@@ -27,8 +50,16 @@ export class ProductTypesService {
     return this.repository.find();
   }
 
-  findOne(id: any) {
-    return this.repository.findOneBy(id);
+  async findOne(id: any) {
+    try {
+      return await this.repository.findOne({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      return null;
+    }
   }
 
   update(id: any, updateProductTypeDto: UpdateProductTypeDto) {

@@ -6,28 +6,21 @@ import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 @Entity()
 export class Product extends Base {
   @Column()
-  name: string;
+  display_content: string;
+
+  @Column({
+    unique: true,
+  })
+  code: string;
 
   @Column()
-  product_type_id: string;
+  fabric: string; // chất liệu
 
-  @Column()
-  price: number;
+  // @Column()
+  // image_link: string; // get id from child product list
 
-  @Column()
-  quantity: number; // = sum of all child product
-
-  @Column()
-  click_count: string;
-
-  @Column()
-  remained_qtt: string;
-
-  @Column()
-  sell_off_info: string; // 1 trong cac san pham con co' giam gia, hoac tat ca deu co giam gia
-
-  @Column()
-  default_image: string; // get id from child product list
+  // @Column()
+  // is_default_image: boolean; // get id from child product list
 
   @ManyToOne(() => ProductType, (productType) => productType.products)
   product_type: ProductType;
