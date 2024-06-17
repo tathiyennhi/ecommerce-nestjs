@@ -37,7 +37,7 @@ export class ChildProductService {
         color: createChildProductDto.color,
         quantity: createChildProductDto.quantity,
         price: createChildProductDto.price,
-        image_link: file ? `/uploads/${file.filename}` : "tbd",
+        image_link: file ? `/public/${file.filename}` : "tbd",
       });
 
       // Lưu product vào database
@@ -58,7 +58,7 @@ export class ChildProductService {
       if (!found) {
         throw new NotFoundException();
       }
-      found.image_link = `/uploads/${file.filename}`;
+      found.image_link = `/public/${file.filename}`;
 
       await this.repository.save(found);
     } catch (error) {}

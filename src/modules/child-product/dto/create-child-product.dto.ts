@@ -1,21 +1,21 @@
-import { IsNumber, IsNumberString, IsString } from "class-validator";
+import { IsNumberString, IsString } from "class-validator";
 
 export class CreateChildProductDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsNumberString()
-    price: number;
+  @IsNumberString()
+  price: number;
 
-    @IsString()
-    color: string;
+  @IsString()
+  color: string;
 
-    @IsString()
-    size: string;
+  @IsString()
+  size: string;
 
-    @IsNumberString()
-    quantity: number;
+  @IsNumberString()
+  quantity: number;
 
-    @IsString()
-    productId: string;
+  @IsString()
+  productId: string;
 }

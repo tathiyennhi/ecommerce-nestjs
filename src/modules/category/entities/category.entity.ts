@@ -5,14 +5,8 @@ import { ProductType } from "src/modules/product-type/entities/product-type.enti
 
 @Entity()
 export class Category extends Base {
-  // @Column()
-  // menu_id: string;
-
   @Column()
   display_content: string;
-
-//   @Column()
-//   description: string;
 
   @ManyToOne(() => Menu, (menu) => menu.categories)
   menu: Menu;

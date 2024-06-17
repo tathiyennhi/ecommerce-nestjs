@@ -58,8 +58,8 @@ import { join } from "path";
       ],
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
-      serveRoot: '/uploads',
+      rootPath: join(__dirname, "..", "public"),
+      serveRoot: "/public",
     }),
     MenuModule,
     CategoryModule,

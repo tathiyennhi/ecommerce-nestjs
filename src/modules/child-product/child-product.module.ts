@@ -3,14 +3,14 @@ import { ChildProductService } from "./child-product.service";
 import { ChildProductController } from "./child-product.controller";
 import { ChildProduct } from "./entities/child-product.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import {MulterModule} from "@nestjs/platform-express";
+import { MulterModule } from "@nestjs/platform-express";
 import { ProductModule } from "../product/products.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ChildProduct]), 
+    TypeOrmModule.forFeature([ChildProduct]),
     MulterModule.register({
-      dest: './upload',
+      dest: "./upload",
     }),
     ProductModule,
   ],

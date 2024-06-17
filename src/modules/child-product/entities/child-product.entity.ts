@@ -20,22 +20,23 @@ export class ChildProduct extends Base {
   quantity: number;
 
   @Column({
-    default: 0
+    default: 0,
   })
   click_count: number;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   sell_off_info: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   image_link: string;
 
   @Column({
-    nullable: true
+    nullable: true,
+    default: false,
   })
   is_default_product: boolean;
 

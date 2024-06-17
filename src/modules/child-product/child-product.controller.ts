@@ -9,7 +9,6 @@ import {
   UseInterceptors,
   UploadedFile,
   UseFilters,
-  NotFoundException,
 } from "@nestjs/common";
 import { ChildProductService } from "./child-product.service";
 import { CreateChildProductDto } from "./dto/create-child-product.dto";
@@ -26,7 +25,7 @@ export class ChildProductController {
   @UseInterceptors(
     FileInterceptor("file", {
       storage: diskStorage({
-        destination: "./uploads", // Thư mục lưu trữ ảnh
+        destination: "./public", // Thư mục lưu trữ ảnh
         filename: (req, file, cb) => {
           const timeNow = new Date();
           // Đặt tên file với UUID để tránh trùng tên
@@ -55,7 +54,7 @@ export class ChildProductController {
   @UseInterceptors(
     FileInterceptor("file", {
       storage: diskStorage({
-        destination: "./uploads", // Thư mục lưu trữ ảnh
+        destination: "./public", // Thư mục lưu trữ ảnh
         filename: (req, file, cb) => {
           const timeNow = new Date();
           // Đặt tên file với UUID để tránh trùng tên
@@ -83,7 +82,7 @@ export class ChildProductController {
       return {
         originalname: file.originalname,
         filename: file.filename,
-        path: `/uploads/${file.filename}`,
+        path: `/public/${file.filename}`,
       };
     } catch (error) {}
     // console.log(file);
