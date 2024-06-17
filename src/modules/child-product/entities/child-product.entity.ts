@@ -37,7 +37,7 @@ export class ChildProduct extends Base {
   @Column({
     nullable: true
   })
-  is_default_product: string;
+  is_default_product: boolean;
 
   @ManyToOne(() => Product, (product) => product.child_products)
   product: Product;
