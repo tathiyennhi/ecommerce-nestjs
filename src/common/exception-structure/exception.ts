@@ -1,12 +1,12 @@
-import { Exception } from '@nestjs/common';
+// import { Exception } from '@nestjs/common';
 
 // Lớp Exception chung
-export class GenericException extends Exception {
+export class GenericException {
   constructor(
     public readonly message: string,
     public readonly statusCode: number = 500,
     public readonly error?: any,
   ) {
-    super(message, statusCode);
+    // super(message, statusCode);
   }
 }

@@ -19,16 +19,24 @@ export class ChildProduct extends Base {
   @Column()
   quantity: number;
 
-  @Column()
+  @Column({
+    default: 0
+  })
   click_count: number;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   sell_off_info: string;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   image_link: string;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   is_default_product: string;
 
   @ManyToOne(() => Product, (product) => product.child_products)

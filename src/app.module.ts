@@ -11,6 +11,8 @@ import * as winston from "winston";
 import { AuthModule } from "./modules/auth/auth.module";
 import { ChildProductModule } from "./modules/child-product/child-product.module";
 import { CategoryModule } from "./modules/category/category.module";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -54,6 +56,10 @@ import { CategoryModule } from "./modules/category/category.module";
           ),
         }),
       ],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
     }),
     MenuModule,
     CategoryModule,

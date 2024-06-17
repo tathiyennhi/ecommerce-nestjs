@@ -48,8 +48,11 @@ export class ProductsService {
     return this.repository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: string) {
+    // return `This action returns a #${id} product`;
+    return await this.repository.findOne({where: {
+      id
+    }})
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
