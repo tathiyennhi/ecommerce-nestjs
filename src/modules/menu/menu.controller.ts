@@ -23,19 +23,21 @@ export class MenuController {
   ) {}
 
   @Post()
-  create(@Body() createMenuDto: CreateMenuDto) {
+  async create(@Body() createMenuDto: CreateMenuDto) {
     // this.logger.error("testtt");
-    return this.menuService.create(createMenuDto);
+    const res = await this.menuService.create(createMenuDto);
+    return res;
   }
 
   @Get()
-  findAll() {
-    return this.menuService.findAll();
+  async findAll() {
+    const res = await this.menuService.findAll();
+    return res;
   }
 
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.menuService.findOne(+id);
+    return this.menuService.findOne(id);
   }
 
   @Patch(":id")

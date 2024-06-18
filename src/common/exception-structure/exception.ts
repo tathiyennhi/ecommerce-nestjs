@@ -1,12 +1,12 @@
-// import { Exception } from '@nestjs/common';
-
-// Lớp Exception chung
-export class GenericException {
+export class GenericException extends Error {
   constructor(
     public readonly message: string,
     public readonly statusCode: number = 500,
     public readonly error?: any,
   ) {
-    // super(message, statusCode);
+    super(message); // Gọi hàm tạo của lớp Error với message
+    this.name = this.constructor.name; // Đặt tên lớp ngoại lệ bằng tên lớp hiện tại
+    this.statusCode = statusCode; // Gán statusCode vào this
+    this.error = error; // Gán error vào this, nếu có
   }
 }

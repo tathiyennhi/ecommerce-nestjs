@@ -1,14 +1,12 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
 import { MenuService } from "../menu/menu.service";
 import { Repository } from "typeorm";
 import { Category } from "./entities/category.entity";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Result } from "src/common/service-result/result";
+import { Status } from "src/common/enums/service-status-code.enum";
 
 @Injectable()
 export class CategoryService {
@@ -20,27 +18,21 @@ export class CategoryService {
 
   async create(createCategoryDto: CreateCategoryDto) {
     try {
-      // Kiểm tra xem menu có tồn tại không
       const menu = await this.menuService.findOne(createCategoryDto.menuId);
       if (!menu) {
-        throw new NotFoundException("Menu not found");
+        return new Result(Status.ERROR, null, "Menu not found");
       }
 
-      // Tạo mới Category
       const newCategory = this.repository.create({
         display_content: createCategoryDto.displayContent,
         description: createCategoryDto.description,
         menu: menu,
       });
 
-      // Lưu Category vào database
-      return await this.repository.save(newCategory);
+      await this.repository.save(newCategory);
+      return new Result(Status.SUCCESS, newCategory, null);
     } catch (error) {
-      // Xử lý lỗi cụ thể hoặc ném ra lỗi đã được chuẩn hóa
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException("Failed to create category");
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
     }
   }
 

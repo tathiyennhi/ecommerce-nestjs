@@ -10,7 +10,7 @@ import { ProductModule } from "../product/products.module";
   imports: [
     TypeOrmModule.forFeature([ChildProduct]),
     MulterModule.register({
-      dest: "./upload",
+      dest: "./public",
     }),
     ProductModule,
   ],

@@ -48,12 +48,10 @@ export class ProductsService {
   }
 
   findAll() {
-    // return `This action returns all products`;
     return this.repository.find();
   }
 
   async findOne(id: string) {
-    // return `This action returns a #${id} product`;
     return await this.repository.findOne({
       where: {
         id,

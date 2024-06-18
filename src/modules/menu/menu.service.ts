@@ -8,6 +8,8 @@ import { UpdateMenuDto } from "./dto/update-menu.dto";
 import { Menu } from "./entities/menu.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { Result } from "src/common/service-result/result";
+import { Status } from "src/common/enums/service-status-code.enum";
 
 @Injectable()
 export class MenuService {
@@ -29,24 +31,31 @@ export class MenuService {
       });
 
       // Lưu menu vào database
-      return await this.repository.save(newCategory);
+      await this.repository.save(newCategory);
+      return new Result(Status.SUCCESS, newCategory, null);
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException("Failed to create Menu");
+      // if (error instanceof NotFoundException) {
+      //   throw error;
+      // }
+      // throw new InternalServerErrorException("Failed to create Menu");
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
     }
   }
 
-  findAll() {
-    return this.repository.find({
-      relations: [
-        "categories",
-        "categories.product_types",
-        "categories.product_types.products",
-        "categories.product_types.products.child_products",
-      ],
-    });
+  async findAll() {
+    try {
+      const data = await this.repository.find({
+        relations: [
+          "categories",
+          "categories.product_types",
+          "categories.product_types.products",
+          "categories.product_types.products.child_products",
+        ],
+      });
+      return new Result(Status.SUCCESS, data, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
+    }
   }
 
   async findOne(id: any) {

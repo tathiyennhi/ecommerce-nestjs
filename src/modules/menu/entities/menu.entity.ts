@@ -4,7 +4,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
 export class Menu extends Base {
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @OneToMany(() => Category, (category) => category.menu)
