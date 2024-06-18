@@ -52,7 +52,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
     // Xử lý các loại exception khác nhau
     if (exception instanceof BadRequestException) {
       const response: any = exception.getResponse();
-      responseBody.message = "Input validation failed"; // response.message || ["Input validation failed"];
+      // responseBody.message = "Input validation failed"; // response.message || ["Input validation failed"];
+      responseBody.message = response.message || ["Input validation failed"];
     } else if (exception instanceof ForbiddenException) {
       responseBody.message = "Access denied";
     } else {

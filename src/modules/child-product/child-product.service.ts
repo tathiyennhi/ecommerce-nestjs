@@ -9,6 +9,8 @@ import { ProductsService } from "../product/products.service";
 import { ChildProduct } from "./entities/child-product.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Result } from "src/common/service-result/result";
+import { Status } from "src/common/enums/service-status-code.enum";
 
 @Injectable()
 export class ChildProductService {
@@ -25,15 +27,16 @@ export class ChildProductService {
       const found = await this.productService.findOne(
         createChildProductDto.productId,
       );
-      if (!found) {
-        throw new NotFoundException("child product not found");
+      if (!found.data) {
+        // throw new NotFoundException("child product not found");
+        return new Result(Status.ERROR, null, "Product not found");
       }
 
       // Tạo mới child product
       const neww = this.repository.create({
         name: createChildProductDto.name,
         size: createChildProductDto.size,
-        product: found,
+        product: found.data,
         color: createChildProductDto.color,
         quantity: createChildProductDto.quantity,
         price: createChildProductDto.price,
@@ -41,13 +44,15 @@ export class ChildProductService {
       });
 
       // Lưu product vào database
-      return await this.repository.save(neww);
+      // return await this.repository.save(neww);
+      return new Result(Status.SUCCESS, neww, null);
     } catch (error) {
       // Xử lý lỗi cụ thể hoặc ném ra lỗi đã được chuẩn hóa
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException("Failed to create category");
+      // if (error instanceof NotFoundException) {
+      //   throw error;
+      // }
+      // throw new InternalServerErrorException("Failed to create category");
+      return new Result(Status.ERROR, null, error.message);
     }
   }
 
@@ -55,26 +60,33 @@ export class ChildProductService {
     try {
       // find child product id
       const found = await this.findOne(childProductId);
-      if (!found) {
-        throw new NotFoundException();
+      if (!found.data) {
+        // throw new NotFoundException();
+        return new Result(Status.ERROR, null, "Child product not found");
       }
-      found.image_link = `/public/${file.filename}`;
+      found.data.image_link = `/public/${file.filename}`;
 
-      await this.repository.save(found);
-    } catch (error) {}
+      await this.repository.save(found.data);
+      return new Result(Status.SUCCESS, found.data, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error.message);
+    }
   }
 
   async setDefaultImageForProduct(childProductId: any, value: boolean) {
     try {
       // find child product id
       const found = await this.findOne(childProductId);
-      if (!found) {
-        throw new NotFoundException();
+      if (!found.data) {
+        return new Result(Status.ERROR, null, "Child product not found");
       }
-      found.is_default_product = value;
+      found.data.is_default_product = value;
 
-      await this.repository.save(found);
-    } catch (error) {}
+      await this.repository.save(found.data);
+      return new Result(Status.SUCCESS, found.data, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error.message);
+    }
   }
 
   findAll() {
@@ -83,11 +95,13 @@ export class ChildProductService {
 
   async findOne(id: string) {
     try {
-      return await this.repository.findOne({
+      const found = await this.repository.findOne({
         where: { id },
       });
-    } catch (error) {}
-    // return `This action returns a #${id} childProduct`;
+      return new Result(Status.SUCCESS, found, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error.message);
+    }
   }
 
   update(id: number, updateChildProductDto: UpdateChildProductDto) {

@@ -42,7 +42,7 @@ export class ChildProductController {
       },
     }),
   )
-  // @UseFilters(MulterExceptionsFilter)
+  @UseFilters(MulterExceptionsFilter)
   @Post()
   async create(
     @Body() createChildProductDto: CreateChildProductDto,
@@ -78,12 +78,15 @@ export class ChildProductController {
     @Body() childProductId: string,
   ) {
     try {
-      await this.childProductService.updateImageLink(childProductId, file);
-      return {
-        originalname: file.originalname,
-        filename: file.filename,
-        path: `/public/${file.filename}`,
-      };
+      return await this.childProductService.updateImageLink(
+        childProductId,
+        file,
+      );
+      // return {
+      //   originalname: file.originalname,
+      //   filename: file.filename,
+      //   path: `/public/${file.filename}`,
+      // };
     } catch (error) {}
     // console.log(file);
     // return "hinh duoc upload thanh cong";

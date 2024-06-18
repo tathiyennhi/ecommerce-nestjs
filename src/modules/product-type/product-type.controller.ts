@@ -16,8 +16,8 @@ export class ProductTypesController {
   constructor(private readonly productTypesService: ProductTypesService) {}
 
   @Post()
-  create(@Body() createProductTypeDto: CreateProductTypeDto) {
-    return this.productTypesService.create(createProductTypeDto);
+  async create(@Body() createProductTypeDto: CreateProductTypeDto) {
+    return await this.productTypesService.create(createProductTypeDto);
   }
 
   @Get()

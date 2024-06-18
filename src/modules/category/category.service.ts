@@ -19,14 +19,14 @@ export class CategoryService {
   async create(createCategoryDto: CreateCategoryDto) {
     try {
       const menu = await this.menuService.findOne(createCategoryDto.menuId);
-      if (!menu) {
+      if (menu && !menu.data) {
         return new Result(Status.ERROR, null, "Menu not found");
       }
 
       const newCategory = this.repository.create({
         display_content: createCategoryDto.displayContent,
         description: createCategoryDto.description,
-        menu: menu,
+        menu: menu.data,
       });
 
       await this.repository.save(newCategory);
@@ -41,11 +41,16 @@ export class CategoryService {
   }
 
   async findOne(id: string) {
-    return await this.repository.findOne({
-      where: {
-        id,
-      },
-    });
+    try {
+      const found = await this.repository.findOne({
+        where: {
+          id,
+        },
+      });
+      return new Result(Status.SUCCESS, found, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error.message);
+    }
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {

@@ -59,11 +59,21 @@ export class MenuService {
   }
 
   async findOne(id: any) {
-    return await this.repository.findOne({
-      where: {
-        id,
-      },
-    });
+    try {
+      const found = await this.repository.findOne({
+        where: {
+          id,
+        },
+      });
+      return new Result(Status.SUCCESS, found, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
+    }
+    // return await this.repository.findOne({
+    //   where: {
+    //     id,
+    //   },
+    // });
   }
 
   async update(id: string, updateMenuDto: UpdateMenuDto) {

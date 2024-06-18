@@ -9,6 +9,8 @@ import { ProductType } from "./entities/product-type.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CategoryService } from "../category/category.service";
+import { Result } from "src/common/service-result/result";
+import { Status } from "src/common/enums/service-status-code.enum";
 
 @Injectable()
 export class ProductTypesService {
@@ -24,25 +26,23 @@ export class ProductTypesService {
       const cate = await this.categoryService.findOne(
         createProductTypeDto.categoryId,
       );
-      if (!cate) {
-        throw new NotFoundException("Catefory not found");
+      if (!cate.data) {
+        // throw new NotFoundException("Catefory not found");
+        return new Result(Status.ERROR, null, "Category not found");
       }
 
       // Tạo mới product type
       const neww = this.repository.create({
         display_content: createProductTypeDto.displayContent,
         description: createProductTypeDto.description,
-        category: cate,
+        category: cate.data,
       });
 
       // Lưu product type vào database
-      return await this.repository.save(neww);
+      await this.repository.save(neww);
+      return new Result(Status.SUCCESS, neww, null);
     } catch (error) {
-      // Xử lý lỗi cụ thể hoặc ném ra lỗi đã được chuẩn hóa
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException("Failed to create category");
+      return new Result(Status.ERROR, null, error.message);
     }
   }
 
@@ -52,13 +52,14 @@ export class ProductTypesService {
 
   async findOne(id: any) {
     try {
-      return await this.repository.findOne({
+      const found = await this.repository.findOne({
         where: {
           id,
         },
       });
+      return new Result(Status.SUCCESS, found, null);
     } catch (error) {
-      return null;
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
     }
   }
 
