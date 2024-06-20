@@ -1,6 +1,7 @@
 import { Base } from "src/common/base-entities/base";
+import { CartItem } from "src/modules/cart/entities/cart_item.entity";
 import { Product } from "src/modules/product/entities/product.entity";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class ChildProduct extends Base {
@@ -42,4 +43,7 @@ export class ChildProduct extends Base {
 
   @ManyToOne(() => Product, (product) => product.child_products)
   product: Product;
+
+  @OneToMany(() => CartItem, (cartItem) => cartItem.child_product)
+  cart_items: CartItem[];
 }
