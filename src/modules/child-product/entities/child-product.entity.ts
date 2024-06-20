@@ -1,5 +1,5 @@
 import { Base } from "src/common/base-entities/base";
-import { CartItem } from "src/modules/cart/entities/cart_item.entity";
+import { CartItem } from "src/modules/cart-item/entities/cart-item.entity";
 import { Product } from "src/modules/product/entities/product.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 

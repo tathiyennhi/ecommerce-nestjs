@@ -17,6 +17,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { CartModule } from './modules/cart/cart.module';
 import { OrderModule } from './modules/order/order.module';
+import { CartItemModule } from './modules/cart-item/cart-item.module';
 
 config();
 
@@ -76,6 +77,7 @@ config();
     AuthModule,
     CartModule,
     OrderModule,
+    CartItemModule,
   ],
   controllers: [AppController],
   providers: [AppService],

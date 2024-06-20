@@ -1,6 +1,6 @@
 import { Base } from "src/common/base-entities/base";
 import { Column, Entity, ManyToOne } from "typeorm";
-import { Cart } from "./cart.entity";
+import { Cart } from "src/modules/cart/entities/cart.entity";
 import { ChildProduct } from "src/modules/child-product/entities/child-product.entity";
 
 @Entity()
