@@ -7,21 +7,28 @@ import { ProductTypeModule } from "./modules/product-type/product-type.module";
 // import { ChildProductModule } from './modules/child-product/child-product.module';
 import { MenuModule } from "./modules/menu/menu.module";
 import { WinstonModule } from "nest-winston";
+import { config } from 'dotenv';
+
 import * as winston from "winston";
 import { AuthModule } from "./modules/auth/auth.module";
 import { ChildProductModule } from "./modules/child-product/child-product.module";
 import { CategoryModule } from "./modules/category/category.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+import { CartModule } from './modules/cart/cart.module';
+import { OrderModule } from './modules/order/order.module';
+
+config();
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: "localhost",
+      host: process.env.DB_HOST,
       port: 5432,
-      username: "postgres",
-      password: "password",
-      database: "test-db",
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
       // entities: [Menu, ProductType, Product, Category],
       entities: [__dirname + "/modules/../**/*.entity.{js,ts}"],
       synchronize: true,
@@ -67,6 +74,8 @@ import { join } from "path";
     ProductModule,
     ChildProductModule,
     AuthModule,
+    CartModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

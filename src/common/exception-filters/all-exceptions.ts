@@ -58,7 +58,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       responseBody.message = "Access denied";
     } else {
       // Xử lý các lỗi khác hoặc lỗi không xác định
-      responseBody.message = "An error occurred";
+      responseBody.message = exception?.message || "An error occurred";
     }
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);

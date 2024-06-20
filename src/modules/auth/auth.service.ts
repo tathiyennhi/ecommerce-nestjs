@@ -7,6 +7,8 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { UsersService } from '../user/users.service';
+import { Result } from 'src/common/service-result/result';
+import { Status } from 'src/common/enums/service-status-code.enum';
 
 @Injectable()
 export class AuthService {
@@ -89,5 +91,23 @@ export class AuthService {
 
   remove(id: number) {
     return `This action removes a #${id} auth`;
+  }
+
+  async googleLogin(req) {
+    if (!req.user) {
+      return new Result(Status.ERROR, null, "No user from google");
+    }
+
+    // check user existed in db yet?
+
+    // not exist -> store to db, information, create jwt, continue shoping
+
+    // exited ==> gen jwt
+    // const {email, firstname, lastname, picture} = req.user;
+    // const payload = { email, firstname, lastname, picture };
+    const token = await this.jwtService.signAsync(req.user, {
+      secret: process.env.TOKEN_KEY,
+    });
+    return new Result(Status.SUCCESS, token, null);
   }
 }
