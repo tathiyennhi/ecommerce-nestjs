@@ -1,11 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginDto } from './dto/login-dto';
 
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
-import * as crypto from 'crypto';
+// import * as bcrypt from 'bcryptjs';
+// import * as crypto from 'crypto';
 import { UsersService } from '../user/users.service';
 import { Result } from 'src/common/service-result/result';
 import { Status } from 'src/common/enums/service-status-code.enum';
@@ -72,10 +72,10 @@ export class AuthService {
       }),
     };
   }
-  compareMD5Hash(password: string, hashedPassword: string): boolean {
-    const md5Hash = crypto.createHash('md5').update(password).digest('hex');
-    return md5Hash === hashedPassword;
-  }
+  // compareMD5Hash(password: string, hashedPassword: string): boolean {
+  //   const md5Hash = crypto.createHash('md5').update(password).digest('hex');
+  //   return md5Hash === hashedPassword;
+  // }
 
   findAll() {
     return `This action returns all auth`;

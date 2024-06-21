@@ -3,45 +3,84 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { Result } from "src/common/service-result/result";
 import { Status } from "src/common/enums/service-status-code.enum";
+import { User } from "./entities/user.entity";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Utils } from "src/common/utils/utils";
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return "This action adds a new user";
+  constructor(
+    @InjectRepository(User)
+    private repository: Repository<User>,
+  ) {}
+
+  async create(createUserDto: CreateUserDto) {
+    try {
+      const foundUser = await this.findByEmail(createUserDto.email);
+      if (foundUser.data) {
+        return new Result(Status.ERROR, null, "User found");
+      }
+
+      const neww = this.repository.create({
+        email: createUserDto.email,
+        name: createUserDto.name,
+        create_via: createUserDto.createVia,
+      });
+
+      if (createUserDto.picture) {
+        neww.picture = createUserDto.picture;
+      }
+
+      if (createUserDto.picture) {
+        neww.password = Utils.md5Hash(createUserDto.password);
+      }
+      await this.repository.save(neww);
+      return new Result(Status.SUCCESS, "User created", null)
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message);
+    }
+  }
+  async updatePassword(updateUserDto: UpdateUserDto) {
+    try {
+      const foundUser = await this.findByEmail(updateUserDto.email);
+      if (!foundUser.data) {
+        return new Result(Status.ERROR, null, "User found");
+      }
+
+      foundUser.password = Utils.md5Hash(updateUserDto.password);
+      await this.repository.save(foundUser);
+      return new Result(Status.SUCCESS, "Password updated successfully", null)
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message);
+    }
   }
 
-  private readonly users = [
-    {
-      userId: "1",
-      username: "john",
-      password: "changeme",
-    },
-    {
-      userId: "2",
-      username: "maria",
-      password: "guess",
-    },
-  ];
-
-  async findOne(username: string): Promise<any | undefined> {
-    return this.users.find((user) => user.username === username);
-  }
   async findById(id: string): Promise<any | undefined> {
     try {
-      const found = this.users.find((user) => user.userId === id);
+      const found = this.repository.findOne({where: {
+        id
+      }});
       return new Result(Status.SUCCESS, found, null);
     } catch (error) {
-      return new Result(Status.SUCCESS, null, error?.message || error?.stack);
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
+    }
+  }
+
+  async findByEmail(email: string): Promise<any | undefined> {
+    try {
+      const found = this.repository.findOne({where: {
+        email
+      }});
+      return new Result(Status.SUCCESS, found, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
     }
   }
 
   findAll() {
     return `This action returns all users`;
   }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;

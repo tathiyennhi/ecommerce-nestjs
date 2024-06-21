@@ -4,7 +4,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
 export class User extends Base {
-  @Column()
+  @Column({unique: true})
   email: string;
 
   @Column()
@@ -13,6 +13,12 @@ export class User extends Base {
   @Column({ default: null })
   picture: string;
 
+  @Column({ default: null })
+  password: string;
+
   @OneToMany(() => Cart, (cart) => cart.user)
   carts: Cart[];
+
+  @Column({ default: "google-login" })
+  create_via: string; // 
 }
