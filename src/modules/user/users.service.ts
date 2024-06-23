@@ -32,15 +32,16 @@ export class UsersService {
         neww.picture = createUserDto.picture;
       }
 
-      if (createUserDto.picture) {
+      if (createUserDto.password) {
         neww.password = Utils.md5Hash(createUserDto.password);
       }
       await this.repository.save(neww);
-      return new Result(Status.SUCCESS, "User created", null)
+      return new Result(Status.SUCCESS, "User created", null);
     } catch (error) {
       return new Result(Status.ERROR, null, error?.message);
     }
   }
+
   async updatePassword(updateUserDto: UpdateUserDto) {
     try {
       const foundUser = await this.findByEmail(updateUserDto.email);
@@ -50,7 +51,7 @@ export class UsersService {
 
       foundUser.password = Utils.md5Hash(updateUserDto.password);
       await this.repository.save(foundUser);
-      return new Result(Status.SUCCESS, "Password updated successfully", null)
+      return new Result(Status.SUCCESS, "Password updated successfully", null);
     } catch (error) {
       return new Result(Status.ERROR, null, error?.message);
     }
@@ -58,9 +59,11 @@ export class UsersService {
 
   async findById(id: string): Promise<any | undefined> {
     try {
-      const found = this.repository.findOne({where: {
-        id
-      }});
+      const found = this.repository.findOne({
+        where: {
+          id,
+        },
+      });
       return new Result(Status.SUCCESS, found, null);
     } catch (error) {
       return new Result(Status.ERROR, null, error?.message || error?.stack);
@@ -69,9 +72,11 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<any | undefined> {
     try {
-      const found = this.repository.findOne({where: {
-        email
-      }});
+      const found = this.repository.findOne({
+        where: {
+          email,
+        },
+      });
       return new Result(Status.SUCCESS, found, null);
     } catch (error) {
       return new Result(Status.ERROR, null, error?.message || error?.stack);

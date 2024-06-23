@@ -6,7 +6,7 @@ export class GenericException extends Error {
   ) {
     super(message); // Gọi hàm tạo của lớp Error với message
     this.name = this.constructor.name; // Đặt tên lớp ngoại lệ bằng tên lớp hiện tại
-    this.statusCode = statusCode; // Gán statusCode vào this
-    this.error = error; // Gán error vào this, nếu có
+    this.statusCode = statusCode; // Gán statusCode
+    this.error = error; // Gán error, nếu có
   }
 }

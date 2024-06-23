@@ -23,12 +23,11 @@ export class ChildProductService {
 
   async create(createChildProductDto: CreateChildProductDto, file: any) {
     try {
-      // Kiểm tra xem child product có tồn tại không
+      // Kiểm tra xem product có tồn tại không
       const found = await this.productService.findOne(
         createChildProductDto.productId,
       );
       if (!found.data) {
-        // throw new NotFoundException("child product not found");
         return new Result(Status.ERROR, null, "Product not found");
       }
 
@@ -43,15 +42,10 @@ export class ChildProductService {
         image_link: file ? `/public/${file.filename}` : "tbd",
       });
 
-      // Lưu product vào database
-      // return await this.repository.save(neww);
+      // Lưu child product vào database
+      await this.repository.save(neww);
       return new Result(Status.SUCCESS, neww, null);
     } catch (error) {
-      // Xử lý lỗi cụ thể hoặc ném ra lỗi đã được chuẩn hóa
-      // if (error instanceof NotFoundException) {
-      //   throw error;
-      // }
-      // throw new InternalServerErrorException("Failed to create category");
       return new Result(Status.ERROR, null, error.message);
     }
   }
@@ -93,7 +87,7 @@ export class ChildProductService {
     return `This action returns all childProduct`;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Result> {
     try {
       const found = await this.repository.findOne({
         where: { id },

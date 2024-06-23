@@ -29,11 +29,7 @@ export class CartService {
       // tim gio hang cua user, neu co thong bao gio hang da ton tai
       const foundCart = await this.findActiveCart(createCartDto.userId);
       if (foundCart.data) {
-        return new Result(
-          Status.ERROR,
-          null,
-          "User already have a cart, no need to add.",
-        );
+        return new Result(Status.SUCCESS, foundCart.data, null);
       }
 
       // neu chua co, tao gio hang moi
@@ -63,6 +59,36 @@ export class CartService {
         null,
         error?.message || "findActiveCart Error",
       );
+    }
+  }
+
+  async findCartItems(cartId: string): Promise<Result> {
+    try {
+      const items = await this.repository.findOne({
+        where: { id: cartId },
+        relations: ["cart_items"],
+      });
+
+      return new Result(Status.SUCCESS, items?.cart_items, null);
+    } catch (error) {
+      return new Result(
+        Status.ERROR,
+        null,
+        error?.message || "findCartItems Error",
+      );
+    }
+  }
+
+  async findById(id: string): Promise<any | undefined> {
+    try {
+      const found = this.repository.findOne({
+        where: {
+          id,
+        },
+      });
+      return new Result(Status.SUCCESS, found, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
     }
   }
 

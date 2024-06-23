@@ -16,5 +16,6 @@ import { ProductModule } from "../product/products.module";
   ],
   controllers: [ChildProductController],
   providers: [ChildProductService],
+  exports: [ChildProductService],
 })
 export class ChildProductModule {}

@@ -18,11 +18,6 @@ export class MenuService {
     private repository: Repository<Menu>,
   ) {}
 
-  // async create(createMenuDto: CreateMenuDto) {
-  //   await this.repository.save(createMenuDto);
-
-  //   return true;
-  // }
   async create(createMenuDto: CreateMenuDto) {
     try {
       // Tạo mới Menu
@@ -34,11 +29,11 @@ export class MenuService {
       await this.repository.save(newCategory);
       return new Result(Status.SUCCESS, newCategory, null);
     } catch (error) {
-      // if (error instanceof NotFoundException) {
-      //   throw error;
-      // }
-      // throw new InternalServerErrorException("Failed to create Menu");
-      return new Result(Status.ERROR, null, error?.message || error?.stack);
+      return new Result(
+        Status.ERROR,
+        null,
+        error?.message || "create Menu ERROR",
+      );
     }
   }
 
@@ -69,11 +64,6 @@ export class MenuService {
     } catch (error) {
       return new Result(Status.ERROR, null, error?.message || error?.stack);
     }
-    // return await this.repository.findOne({
-    //   where: {
-    //     id,
-    //   },
-    // });
   }
 
   async update(id: string, updateMenuDto: UpdateMenuDto) {

@@ -4,7 +4,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
 export class User extends Base {
-  @Column({unique: true})
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -20,5 +20,5 @@ export class User extends Base {
   carts: Cart[];
 
   @Column({ default: "google-login" })
-  create_via: string; // 
+  create_via: string; // local
 }

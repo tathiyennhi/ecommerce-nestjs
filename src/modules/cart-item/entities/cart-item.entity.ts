@@ -23,7 +23,7 @@ export class CartItem extends Base {
   @Column()
   price_at_adding: number;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   tax: number;
 
   @Column()
