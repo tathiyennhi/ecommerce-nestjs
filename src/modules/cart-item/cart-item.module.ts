@@ -16,5 +16,6 @@ import { CartItem } from "./entities/cart-item.entity";
     ChildProductModule,
     TypeOrmModule.forFeature([CartItem]),
   ],
+  exports: [CartItemService],
 })
 export class CartItemModule {}

@@ -96,10 +96,11 @@ export class CartService {
     return `This action returns all cart`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} cart`;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(id: number, updateCartDto: UpdateCartDto) {
     return `This action updates a #${id} cart`;
   }

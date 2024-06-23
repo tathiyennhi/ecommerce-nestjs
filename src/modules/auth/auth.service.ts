@@ -1,22 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { LoginDto } from './dto/login-dto';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Injectable } from "@nestjs/common";
+import { CreateAuthDto } from "./dto/create-auth.dto";
+import { UpdateAuthDto } from "./dto/update-auth.dto";
+import { LoginDto } from "./dto/login-dto";
 
-import { JwtService } from '@nestjs/jwt';
+import { JwtService } from "@nestjs/jwt";
 // import * as bcrypt from 'bcryptjs';
 // import * as crypto from 'crypto';
-import { UsersService } from '../user/users.service';
-import { Result } from 'src/common/service-result/result';
-import { Status } from 'src/common/enums/service-status-code.enum';
+import { UsersService } from "../user/users.service";
+import { Result } from "src/common/service-result/result";
+import { Status } from "src/common/enums/service-status-code.enum";
+import { Utils } from "src/common/utils/utils";
 
 @Injectable()
 export class AuthService {
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.usersService.findByEmail(username);
+    if (user && user.password === Utils.md5Hash(password)) {
+      return user.data;
     }
     return null;
   }
@@ -24,12 +25,10 @@ export class AuthService {
   constructor(
     // private usersService: UsersService,
     private jwtService: JwtService,
-    private usersService: UsersService
-  ) {
-
-  }
+    private usersService: UsersService,
+  ) {}
   create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+    return "This action adds a new auth";
   }
 
   // auth(dto: LoginDto) {
