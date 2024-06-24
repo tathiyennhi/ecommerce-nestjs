@@ -22,7 +22,9 @@
     "typeorm": "npm run build && npx typeorm -d dist/src/common/config/typeorm.js",
     "migration:generate": "npm run typeorm -- migration:generate",
     "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert"
+    "migration:revert": "npm run typeorm -- migration:revert",
+
+    "data:sync": "ts-node -r tsconfig-paths/register ./seed/seed.helper.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
