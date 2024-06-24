@@ -1,7 +1,7 @@
 import { Base } from "src/common/base-entities/base";
 import { ChildProduct } from "src/modules/child-product/entities/child-product.entity";
 import { ProductType } from "src/modules/product-type/entities/product-type.entity";
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
+import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from "typeorm";
 
 @Entity()
 export class Product extends Base {
@@ -23,6 +23,7 @@ export class Product extends Base {
   // is_default_image: boolean; // get id from child product list
 
   @ManyToOne(() => ProductType, (productType) => productType.products)
+  @JoinColumn({ name: "product_type_id" })
   product_type: ProductType;
 
   @OneToMany(() => ChildProduct, (ChildProduct) => ChildProduct.product)

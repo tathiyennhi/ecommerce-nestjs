@@ -1,7 +1,7 @@
 import { Base } from "src/common/base-entities/base";
 import { CartItem } from "src/modules/cart-item/entities/cart-item.entity";
 import { Product } from "src/modules/product/entities/product.entity";
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class ChildProduct extends Base {
@@ -42,6 +42,7 @@ export class ChildProduct extends Base {
   is_default_product: boolean;
 
   @ManyToOne(() => Product, (product) => product.child_products)
+  @JoinColumn({ name: "product_id" })
   product: Product;
 
   @OneToMany(() => CartItem, (cartItem) => cartItem.child_product)
