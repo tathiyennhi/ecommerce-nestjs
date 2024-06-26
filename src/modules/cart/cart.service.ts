@@ -34,7 +34,7 @@ export class CartService {
 
       // neu chua co, tao gio hang moi
       const neww = await this.repository.create({
-        user: foundUser,
+        user: foundUser.data,
       });
       await this.repository.save(neww);
       return new Result(Status.SUCCESS, neww, null);
@@ -48,8 +48,8 @@ export class CartService {
       const activeCart = await this.repository
         .createQueryBuilder("cart")
         .leftJoinAndSelect("cart.user", "user") // Join only with user to get user information
-        .where("cart.status = :status", { status: "ACTIVE" })
-        .andWhere("user.id = :userId", { userId })
+        .where("user.id = :userId", { userId })
+        .andWhere("cart.status = :status", { status: "ACTIVE" })
         .getOne();
 
       return new Result(Status.SUCCESS, activeCart, null);
@@ -66,7 +66,7 @@ export class CartService {
     try {
       const items = await this.repository.findOne({
         where: { id: cartId },
-        relations: ["cart_items"],
+        relations: ["cart_items", "cart_items.child_product"],
       });
 
       return new Result(Status.SUCCESS, items?.cart_items, null);

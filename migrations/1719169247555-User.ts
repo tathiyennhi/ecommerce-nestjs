@@ -38,7 +38,7 @@ export class User1719169247555 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: "createVia",
+            name: "create_via",
             type: "varchar",
             isNullable: true,
           },

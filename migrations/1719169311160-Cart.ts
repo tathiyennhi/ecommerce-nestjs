@@ -29,7 +29,7 @@ export class Cart1719169311160 implements MigrationInterface {
             default: "'ACTIVE'",
           },
           {
-            name: "userId",
+            name: "user_id",
             type: "uuid",
           },
         ],
@@ -40,7 +40,7 @@ export class Cart1719169311160 implements MigrationInterface {
     await queryRunner.createForeignKey(
       "cart",
       new TableForeignKey({
-        columnNames: ["userId"],
+        columnNames: ["user_id"],
         referencedColumnNames: ["id"],
         referencedTableName: "user",
         onDelete: "CASCADE",

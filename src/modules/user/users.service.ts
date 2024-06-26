@@ -60,7 +60,7 @@ export class UsersService {
 
   async findById(id: string): Promise<any | undefined> {
     try {
-      const found = this.repository.findOne({
+      const found = await this.repository.findOne({
         where: {
           id,
         },
@@ -73,7 +73,7 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<any | undefined> {
     try {
-      const found = this.repository.findOne({
+      const found = await this.repository.findOne({
         where: {
           email,
         },

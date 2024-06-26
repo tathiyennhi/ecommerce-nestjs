@@ -11,6 +11,7 @@ import { UsersService } from "../user/users.service";
 import { Result } from "src/common/service-result/result";
 import { Status } from "src/common/enums/service-status-code.enum";
 import { Utils } from "src/common/utils/utils";
+import { CreateUserDto } from "../user/dto/create-user.dto";
 
 @Injectable()
 export class AuthService {
@@ -93,20 +94,42 @@ export class AuthService {
   }
 
   async googleLogin(req) {
-    if (!req.user) {
-      return new Result(Status.ERROR, null, "No user from google");
+    try {
+      if (!req.user) {
+        return new Result(Status.ERROR, null, "No user from google");
+      }
+
+      // check user existed in db yet?
+      const foundUser = await this.usersService.findByEmail(req.user.email);
+
+      // not exist -> store to db, information, create jwt, continue shoping
+      if (!foundUser.data) {
+        const createUserDto: CreateUserDto = {
+          email: req.user.email,
+          name: req.user.lastName || req.user.email,
+          createVia: "google-login",
+          password: null,
+          picture: req.user?.picture,
+        };
+        const newUser = await this.usersService.create(createUserDto);
+        if (!newUser.data) {
+          // @TODO: logger error here, but continue shopping
+        }
+      }
+
+      // exited ==> gen jwt
+      // const {email, firstname, lastname, picture} = req.user;
+      // const payload = { email, firstname, lastname, picture };
+      const token = await this.jwtService.signAsync(req.user, {
+        secret: process.env.TOKEN_KEY,
+      });
+      return new Result(Status.SUCCESS, token, null);
+    } catch (error) {
+      return new Result(
+        Status.SUCCESS,
+        null,
+        error?.message || "googleLogin Error",
+      );
     }
-
-    // check user existed in db yet?
-
-    // not exist -> store to db, information, create jwt, continue shoping
-
-    // exited ==> gen jwt
-    // const {email, firstname, lastname, picture} = req.user;
-    // const payload = { email, firstname, lastname, picture };
-    const token = await this.jwtService.signAsync(req.user, {
-      secret: process.env.TOKEN_KEY,
-    });
-    return new Result(Status.SUCCESS, token, null);
   }
 }

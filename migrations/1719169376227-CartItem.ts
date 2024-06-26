@@ -23,14 +23,14 @@ export class CartItem1719169376227 implements MigrationInterface {
             type: "varchar",
             isNullable: true,
           },
-          {
-            name: "cart_id",
-            type: "uuid",
-          },
-          {
-            name: "child_product_id",
-            type: "uuid",
-          },
+          // {
+          //   name: "cart_id",
+          //   type: "uuid",
+          // },
+          // {
+          //   name: "child_product_id",
+          //   type: "uuid",
+          // },
           {
             name: "quantity",
             type: "int",

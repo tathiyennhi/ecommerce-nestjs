@@ -21,7 +21,7 @@ export class CartItemService {
     private childProductService: ChildProductService,
   ) {}
 
-  // @ TODO: kiểm tra token đi kèm có phải quyền truy cập giỏ hàng của user này không --> kiểm tra userId và thông tin từ token do client cung cấp có giống nhau không
+  // @TODO: kiểm tra token đi kèm có phải quyền truy cập giỏ hàng của user này không --> kiểm tra userId và thông tin từ token do client cung cấp có giống nhau không
   async createOrUpdate(createCartItemDto: CreateCartItemDto): Promise<Result> {
     try {
       const { childProductId, cartId, quantity, userId } = createCartItemDto;
@@ -34,8 +34,9 @@ export class CartItemService {
 
       // @TODO: kiem tra số lượng hàng con` đủ không, không đủ thi` bao' gi`? Có trừ số lượng hàng trong kho ở bước tạo này không?
       // @TODO: Tình huống nhiều thiết bị truy cập vào 1 tài khoản và update giỏ hàng đồng thời?
+      // @TODO: Tình huống tạo giỏ hàng thành công nhưng tạo cartItem lỗi --> dùng transaction
 
-      // tim gio hang
+      // tìm giỏ hàng
       const foundCart = await this.cartService.findActiveCart(userId);
       if (!foundCart.data) {
         // Chưa có giỏ hàng thì tạo mới giỏ hàng ở đây
@@ -49,11 +50,11 @@ export class CartItemService {
             "There are some errors when creating cart, please try again",
           );
         }
-        foundCart.data = newCart;
+        foundCart.data = newCart.data;
       } else {
         // kiểm tra hàng trong đó có trùng với món hàng vừa được thêm vào không, nếu trùng thì số lượng cần được update lại, ĐÃ CÓ GIỎ HÀNG RỒI,
         const updateCartItem = await this.updateCartItemInCart(
-          cartId,
+          cartId || foundCart.data.id,
           quantity,
           foundChildProduct.data,
         );
@@ -69,8 +70,8 @@ export class CartItemService {
         quantity,
         price_at_adding: foundChildProduct.data.price,
         subtotal: foundChildProduct.data.price * quantity,
-        cart_id: cartId,
-        child_product_id: childProductId,
+        // cart_id: foundCart.data.id,
+        // child_product_id: childProductId,
       });
       await this.repository.save(neww);
       return new Result(Status.SUCCESS, neww, null);

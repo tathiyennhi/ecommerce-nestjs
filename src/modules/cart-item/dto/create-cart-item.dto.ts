@@ -1,8 +1,14 @@
-import { IsNumber, IsNumberString, IsString } from "class-validator";
+import {
+  IsNumber,
+  IsNumberString,
+  IsOptional,
+  IsString,
+} from "class-validator";
 import { IsGreaterThanZero } from "src/common/custom-validators/is-greater-than-zero.validator";
 
 export class CreateCartItemDto {
   @IsString()
+  @IsOptional()
   cartId: string;
 
   @IsString()
