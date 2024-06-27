@@ -30,6 +30,8 @@ export class ChildProduct1719168757980 implements MigrationInterface {
           {
             name: "price",
             type: "decimal",
+            precision: 10,
+            scale: 2,
           },
           {
             name: "color",
@@ -41,11 +43,11 @@ export class ChildProduct1719168757980 implements MigrationInterface {
           },
           {
             name: "quantity",
-            type: "int",
+            type: "integer",
           },
           {
             name: "click_count",
-            type: "int",
+            type: "integer",
             default: 0,
           },
           {
@@ -72,6 +74,7 @@ export class ChildProduct1719168757980 implements MigrationInterface {
       true,
     );
 
+    // Add foreign key constraint
     await queryRunner.createForeignKey(
       "child_product",
       new TableForeignKey({

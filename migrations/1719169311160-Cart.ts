@@ -37,6 +37,7 @@ export class Cart1719169311160 implements MigrationInterface {
       true,
     );
 
+    // Add foreign key constraint
     await queryRunner.createForeignKey(
       "cart",
       new TableForeignKey({

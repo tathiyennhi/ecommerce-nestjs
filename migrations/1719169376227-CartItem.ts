@@ -23,51 +23,68 @@ export class CartItem1719169376227 implements MigrationInterface {
             type: "varchar",
             isNullable: true,
           },
-          // {
-          //   name: "cart_id",
-          //   type: "uuid",
-          // },
-          // {
-          //   name: "child_product_id",
-          //   type: "uuid",
-          // },
           {
             name: "quantity",
-            type: "int",
+            type: "integer",
           },
           {
             name: "price_at_adding",
             type: "decimal",
+            precision: 10,
+            scale: 2,
           },
           {
             name: "tax",
             type: "decimal",
+            precision: 10,
+            scale: 2,
             isNullable: true,
             default: null,
           },
           {
             name: "subtotal",
             type: "decimal",
+            precision: 10,
+            scale: 2,
+          },
+          {
+            name: "version",
+            type: "int",
+            default: 1,
+          },
+          {
+            name: "cart_id",
+            type: "uuid",
+          },
+          {
+            name: "child_product_id",
+            type: "uuid",
           },
         ],
       }),
       true,
     );
 
-    await queryRunner.createForeignKeys("cart_item", [
+    // Add foreign key constraints
+    await queryRunner.createForeignKey(
+      "cart_item",
       new TableForeignKey({
         columnNames: ["cart_id"],
         referencedColumnNames: ["id"],
         referencedTableName: "cart",
         onDelete: "CASCADE",
       }),
+    );
+
+    await queryRunner.createForeignKey(
+      "cart_item",
       new TableForeignKey({
         columnNames: ["child_product_id"],
         referencedColumnNames: ["id"],
         referencedTableName: "child_product",
         onDelete: "CASCADE",
       }),
-    ]);
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

@@ -9,6 +9,7 @@ import {
 } from "@nestjs/common";
 import { HttpAdapterHost } from "@nestjs/core";
 import { Status } from "../enums/service-status-code.enum";
+import { OptimisticLockVersionMismatchError } from "typeorm";
 
 class ResponseBody {
   status: any;
@@ -56,6 +57,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       responseBody.message = response.message || ["Input validation failed"];
     } else if (exception instanceof ForbiddenException) {
       responseBody.message = "Access denied";
+    } else if (exception instanceof OptimisticLockVersionMismatchError) {
+      responseBody.message =
+        "The cart item was updated by another transaction. Please try again.";
     } else {
       // Xử lý các lỗi khác hoặc lỗi không xác định
       responseBody.message = exception?.message || "An error occurred";

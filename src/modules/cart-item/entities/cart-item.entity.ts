@@ -1,5 +1,5 @@
 import { Base } from "src/common/base-entities/base";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, VersionColumn } from "typeorm";
 import { Cart } from "src/modules/cart/entities/cart.entity";
 import { ChildProduct } from "src/modules/child-product/entities/child-product.entity";
 
@@ -30,4 +30,7 @@ export class CartItem extends Base {
 
   @Column()
   subtotal: number; // quantity * price_at_adding
+
+  @VersionColumn()
+  version: number; // Sử dụng cho optimistic locking
 }
