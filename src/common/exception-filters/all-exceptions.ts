@@ -10,6 +10,7 @@ import {
 import { HttpAdapterHost } from "@nestjs/core";
 import { Status } from "../enums/service-status-code.enum";
 import { OptimisticLockVersionMismatchError } from "typeorm";
+import { MulterError } from "multer";
 
 class ResponseBody {
   status: any;
@@ -55,6 +56,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       const response: any = exception.getResponse();
       // responseBody.message = "Input validation failed"; // response.message || ["Input validation failed"];
       responseBody.message = response.message || ["Input validation failed"];
+    } else if (exception instanceof MulterError) {
+      // Xử lý các lỗi Multer
+      responseBody.message = exception?.message || "Multer exception ...";
     } else if (exception instanceof ForbiddenException) {
       responseBody.message = "Access denied";
     } else if (exception instanceof OptimisticLockVersionMismatchError) {
