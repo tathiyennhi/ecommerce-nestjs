@@ -13,6 +13,7 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { Result } from "src/common/service-result/result";
 import { Status } from "src/common/enums/service-status-code.enum";
+import { PagingQueryDto } from "src/common/base-dtos/paging-query.dto";
 
 @Controller("products")
 export class ProductsController {
@@ -25,19 +26,11 @@ export class ProductsController {
 
   @Get()
   findAll(
-    @Query("page") page: number,
-    @Query("itemPerPage") itemPerPage: number,
+    @Query() query: PagingQueryDto
   ) {
-    const pageNumber = page; // Mặc định là 1 nếu không có giá trị
-    const itemsPerPage = itemPerPage; // Mặc định là 10 nếu không có giá trị
-    if (pageNumber <= 0 || itemsPerPage < 0) {
-      return new Result(
-        Status.ERROR,
-        null,
-        "Please supply correct paging params!",
-      );
-    }
-    return this.productsService.getProducts(pageNumber, itemsPerPage);
+    const { page, itemsPerPage} = query;
+    
+    return this.productsService.getProducts(page, itemsPerPage);
   }
 
   @Get(":id")

@@ -83,6 +83,23 @@ export class ChildProductService {
     }
   }
 
+  async updateQuantity(childProductId: any, value: number) {
+    try {
+      // find child product id
+      const found = await this.findOne(childProductId);
+      if (!found.data) {
+        return new Result(Status.ERROR, null, "Child product not found");
+      }
+      found.data.quantity = value;
+
+      await this.repository.save(found.data);
+      return new Result(Status.SUCCESS, found.data, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error.message);
+    }
+  }
+
+  
   findAll() {
     return `This action returns all childProduct`;
   }

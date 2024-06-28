@@ -40,6 +40,16 @@ export class Product1719168574210 implements MigrationInterface {
             name: "product_type_id",
             type: "uuid",
           },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+        },
+        {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
+        }
         ],
       }),
       true,

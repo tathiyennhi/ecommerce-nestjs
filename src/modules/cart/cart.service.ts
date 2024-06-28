@@ -100,9 +100,23 @@ export class CartService {
     return `This action returns a #${id} cart`;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
+  async updateStatus(updateCartDto: UpdateCartDto) {
+    // return `This action updates a #${id} cart`;
+    try {
+      const found = await this.repository.findOne({
+        where: {
+          id: updateCartDto.cartId
+        },
+      });
+      if (!found) {
+        return new Result(Status.ERROR, null, "Cart not found");
+      }
+      found.status = updateCartDto.status;
+      await this.repository.save(found);
+      return new Result(Status.SUCCESS, found, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
+    }
   }
 
   remove(id: string) {

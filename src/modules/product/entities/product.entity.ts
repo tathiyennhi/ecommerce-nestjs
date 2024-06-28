@@ -14,13 +14,7 @@ export class Product extends Base {
   code: string;
 
   @Column()
-  fabric: string; // chất liệu
-
-  // @Column()
-  // image_link: string; // get id from child product list
-
-  // @Column()
-  // is_default_image: boolean; // get id from child product list
+  fabric: string; // chất liệu @TODO: table for fabric
 
   @ManyToOne(() => ProductType, (productType) => productType.products)
   @JoinColumn({ name: "product_type_id" })

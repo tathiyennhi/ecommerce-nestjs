@@ -4,13 +4,13 @@ import { Column, JoinColumn, OneToOne, VersionColumn } from "typeorm";
 
 export class Order extends Base {
   @Column()
-  status: string; // thành công || hủy đơn || đang giao || chờ thanh toán
+  status: string; // thành công || hủy đơn || đang giao || chờ thanh toán @TODO: table for status
 
   @Column()
-  payment_method: string; // cash || momo || bank || COD
+  payment_method: string; // cash || momo || bank || COD @TODO: table for payment method
 
   @Column()
-  shipping_method: string;
+  shipping_method: string; // @TODO: table for shipping method
 
   @Column({ nullable: true })
   voucher: string;

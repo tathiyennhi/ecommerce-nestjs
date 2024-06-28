@@ -12,10 +12,10 @@ export class ChildProduct extends Base {
   price: number;
 
   @Column()
-  color: string;
+  color: string; // @TODO: table for color
 
   @Column()
-  size: string;
+  size: string; // @TODO: table for size and descripton|note for choosing size
 
   @Column()
   quantity: number;
@@ -28,7 +28,7 @@ export class ChildProduct extends Base {
   @Column({
     nullable: true,
   })
-  sell_off_info: string;
+  sell_off_info: string; // @TODO: table for sell_off_info
 
   @Column({
     nullable: true,

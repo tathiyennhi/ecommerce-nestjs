@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { Result } from 'src/common/service-result/result';
+import { Status } from 'src/common/enums/service-status-code.enum';
+import { PagingQueryDto } from 'src/common/base-dtos/paging-query.dto';
 
 @Controller('order')
 export class OrderController {
@@ -13,8 +16,9 @@ export class OrderController {
   }
 
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  findAll( @Query() query: PagingQueryDto) {
+    const { page = 1, itemsPerPage = 10 } = query;
+    return this.orderService.getOrders(page, itemsPerPage);
   }
 
   @Get(':id')

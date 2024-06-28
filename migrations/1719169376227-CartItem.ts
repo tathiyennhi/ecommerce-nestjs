@@ -60,6 +60,16 @@ export class CartItem1719169376227 implements MigrationInterface {
             name: "child_product_id",
             type: "uuid",
           },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+        },
+        {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
+        }
         ],
       }),
       true,
