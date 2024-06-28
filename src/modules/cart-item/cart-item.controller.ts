@@ -31,15 +31,13 @@ export class CartItemController {
     return this.cartItemService.findOne(+id);
   }
 
-  @Patch(":id")
-  update(
-    @Param("id") _id: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Body() _updateCartItemDto: UpdateCartItemDto,
-  ) {
-    // return this.cartItemService.updateCartItemInCart(id, updateCartItemDto);
-    return true;
-  }
+  // @Patch(":id")
+  // update(
+  //   @Param("id") _id: string,
+  //   @Body() _updateCartItemDto: UpdateCartItemDto,
+  // ) {
+  //   return this.cartItemService.updateCartItemInCart(id, updateCartItemDto);
+  // }
 
   @Delete(":id")
   remove(@Param("id") id: string) {
