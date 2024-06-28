@@ -71,4 +71,38 @@ export class ProductsService {
   remove(id: number) {
     return `This action removes a #${id} product`;
   }
+
+  async getProducts(page: number, itemPerPage: number) {
+    try {
+      // Tính toán số bản ghi cần bỏ qua
+      const skip = (page - 1) * itemPerPage;
+
+      // Truy vấn lấy tổng số bản ghi
+      const [products, totalItems] = await this.repository.findAndCount({
+        skip,
+        take: itemPerPage,
+        // order: {
+        //   createdAt: "DESC", // Sắp xếp theo thời gian tạo (giả sử bạn có trường 'createdAt')
+        // },
+      });
+
+      // Tính toán tổng số trang
+      const totalPages = Math.ceil(totalItems / itemPerPage);
+
+      // Tạo đối tượng chứa thông tin kết quả và phân trang
+      const result = {
+        products,
+        pagination: {
+          totalItems,
+          totalPages,
+          currentPage: page,
+          itemPerPage,
+        },
+      };
+
+      return new Result(Status.SUCCESS, result, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error.message);
+    }
+  }
 }
