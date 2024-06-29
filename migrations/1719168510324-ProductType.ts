@@ -32,15 +32,15 @@ export class ProductType1719168510324 implements MigrationInterface {
             type: "uuid",
           },
           {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-        },
-        {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
-        }
+            name: "created_at",
+            type: "timestamp",
+            default: "now()",
+          },
+          {
+            name: "updated_at",
+            type: "timestamp",
+            default: "now()",
+          },
         ],
       }),
       true,

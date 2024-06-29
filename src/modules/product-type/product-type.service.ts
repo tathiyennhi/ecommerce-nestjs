@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateProductTypeDto } from "./dto/create-product-type.dto";
 import { UpdateProductTypeDto } from "./dto/update-product-type.dto";
 import { ProductType } from "./entities/product-type.entity";

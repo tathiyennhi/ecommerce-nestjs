@@ -3,16 +3,14 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  // Patch,
   Param,
   Delete,
   Query,
 } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { CreateProductDto } from "./dto/create-product.dto";
-import { UpdateProductDto } from "./dto/update-product.dto";
-import { Result } from "src/common/service-result/result";
-import { Status } from "src/common/enums/service-status-code.enum";
+// import { UpdateProductDto } from "./dto/update-product.dto";
 import { PagingQueryDto } from "src/common/base-dtos/paging-query.dto";
 
 @Controller("products")
@@ -25,11 +23,9 @@ export class ProductsController {
   }
 
   @Get()
-  findAll(
-    @Query() query: PagingQueryDto
-  ) {
-    const { page, itemsPerPage} = query;
-    
+  findAll(@Query() query: PagingQueryDto) {
+    const { page, itemsPerPage } = query;
+
     return this.productsService.getProducts(page, itemsPerPage);
   }
 
@@ -38,10 +34,10 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
-  }
+  // @Patch(":id")
+  // update(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto) {
+  //   return this.productsService.update(id, updateProductDto);
+  // }
 
   @Delete(":id")
   remove(@Param("id") id: string) {

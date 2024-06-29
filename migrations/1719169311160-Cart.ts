@@ -33,15 +33,15 @@ export class Cart1719169311160 implements MigrationInterface {
             type: "uuid",
           },
           {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-        },
-        {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
-        }
+            name: "created_at",
+            type: "timestamp",
+            default: "now()",
+          },
+          {
+            name: "updated_at",
+            type: "timestamp",
+            default: "now()",
+          },
         ],
       }),
       true,
