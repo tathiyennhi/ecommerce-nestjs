@@ -30,10 +30,10 @@ export class CartController {
     return this.cartService.findCartItems(id);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(+id, updateCartDto);
-  }
+  // @Patch(":id")
+  // update(@Param("id") id: string, @Body() updateCartDto: UpdateCartDto) {
+  //   return this.cartService.update(+id, updateCartDto);
+  // }
 
   @Delete(":id")
   remove(@Param("id") id: string) {

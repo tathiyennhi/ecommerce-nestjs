@@ -137,15 +137,13 @@ export class OrderService {
 
   async getOrders(page: number, itemsPerPage: number) {
     try {
-      // Tính toán số bản ghi cần bỏ qua
       const skip = (page - 1) * itemsPerPage;
 
-      // Truy vấn lấy tổng số bản ghi
       const [orders, totalItems] = await this.repository.findAndCount({
         skip,
         take: itemsPerPage,
         order: {
-          created_at: "DESC", // Sắp xếp theo thời gian tạo (giả sử bạn có trường 'createdAt')
+          created_at: "DESC", // Sắp xếp theo thời gian tạo
         },
       });
 
