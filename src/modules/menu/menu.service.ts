@@ -66,6 +66,20 @@ export class MenuService {
     }
   }
 
+  async findCategory(id: any) {
+    try {
+      const found = await this.repository.findOne({
+        where: {
+          id,
+        },
+        relations: ["categories"],
+      });
+      return new Result(Status.SUCCESS, found, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
+    }
+  }
+
   async update(id: string, updateMenuDto: UpdateMenuDto) {
     try {
       const found = await this.repository.findOne({

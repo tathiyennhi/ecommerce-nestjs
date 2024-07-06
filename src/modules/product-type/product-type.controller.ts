@@ -30,6 +30,11 @@ export class ProductTypesController {
     return this.productTypesService.findOne(id);
   }
 
+  @Get("/by-category/:id")
+  findByCate(@Param("id") id: string) {
+    return this.productTypesService.getByCategory(id);
+  }
+
   @Patch(":id")
   update(
     @Param("id") id: string,

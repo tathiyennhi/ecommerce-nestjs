@@ -92,9 +92,7 @@ export class CartService {
     }
   }
 
-  findAll() {
-    return `This action returns all cart`;
-  }
+  async findAll() {}
 
   findOne(id: string) {
     return `This action returns a #${id} cart`;

@@ -21,8 +21,8 @@ export class CartController {
   }
 
   @Get()
-  findAll() {
-    return this.cartService.findAll();
+  async findAll() {
+    return await this.cartService.findAll();
   }
 
   @Get(":id")

@@ -7,6 +7,8 @@ import { Repository } from "typeorm";
 import { CategoryService } from "../category/category.service";
 import { Result } from "src/common/service-result/result";
 import { Status } from "src/common/enums/service-status-code.enum";
+import { Utils } from "src/common/utils/utils";
+import { GetProductTypeResDto } from "./dto/get-res.dto";
 
 @Injectable()
 export class ProductTypesService {
@@ -56,6 +58,20 @@ export class ProductTypesService {
       return new Result(Status.SUCCESS, found, null);
     } catch (error) {
       return new Result(Status.ERROR, null, error?.message || error?.stack);
+    }
+  }
+
+  async getByCategory(cateId: string): Promise<Result> {
+    try {
+      const found = await this.repository.find({
+        where: { category: { id: cateId } },
+      });
+      const result = Utils.transformToDTO(GetProductTypeResDto, found, {
+        excludeExtraneousValues: true,
+      });
+      return new Result(Status.SUCCESS, result, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error.message);
     }
   }
 

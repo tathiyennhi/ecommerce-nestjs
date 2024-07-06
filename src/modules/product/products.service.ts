@@ -6,6 +6,8 @@ import { Product } from "./entities/product.entity";
 import { ProductTypesService } from "../product-type/product-type.service";
 import { Result } from "src/common/service-result/result";
 import { Status } from "src/common/enums/service-status-code.enum";
+import { Utils } from "src/common/utils/utils";
+import { GetProductResDto } from "./dto/get-res.dto";
 
 @Injectable()
 export class ProductsService {
@@ -79,6 +81,7 @@ export class ProductsService {
         // order: {
         //   createdAt: "DESC", // Sắp xếp theo thời gian tạo (giả sử bạn có trường 'createdAt')
         // },
+        relations: ["child_products"],
       });
 
       // Tính toán tổng số trang
@@ -86,7 +89,7 @@ export class ProductsService {
 
       // Tạo đối tượng chứa thông tin kết quả và phân trang
       const result = {
-        products,
+        products: Utils.transformToDTO(GetProductResDto, products),
         pagination: {
           totalItems,
           totalPages,

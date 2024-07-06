@@ -22,13 +22,18 @@ export class CategoryController {
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  async findAll() {
+    return await this.categoryService.findAll();
   }
 
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.categoryService.findOne(id);
+  }
+
+  @Get("/by-menu/:id")
+  findByMenuId(@Param("id") id: string) {
+    return this.categoryService.getCategoriesByMenuId(id);
   }
 
   @Patch(":id")

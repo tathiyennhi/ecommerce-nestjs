@@ -7,6 +7,8 @@ import { Category } from "./entities/category.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Result } from "src/common/service-result/result";
 import { Status } from "src/common/enums/service-status-code.enum";
+import { GetCategoryResDto } from "./dto/get-all-.dto";
+import { Utils } from "src/common/utils/utils";
 
 @Injectable()
 export class CategoryService {
@@ -36,8 +38,16 @@ export class CategoryService {
     }
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll() {
+    try {
+      const data = await this.repository.find();
+      const result = Utils.transformToDTO(GetCategoryResDto, data, {
+        excludeExtraneousValues: true,
+      });
+      return new Result(Status.SUCCESS, result, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error?.message || error?.stack);
+    }
   }
 
   async findOne(id: string) {
@@ -48,6 +58,20 @@ export class CategoryService {
         },
       });
       return new Result(Status.SUCCESS, found, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, error.message);
+    }
+  }
+
+  async getCategoriesByMenuId(menuId: string): Promise<Result> {
+    try {
+      const found = await this.repository.find({
+        where: { menu: { id: menuId } },
+      });
+      const result = Utils.transformToDTO(GetCategoryResDto, found, {
+        excludeExtraneousValues: true,
+      });
+      return new Result(Status.SUCCESS, result, null);
     } catch (error) {
       return new Result(Status.ERROR, null, error.message);
     }
