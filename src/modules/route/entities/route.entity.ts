@@ -13,6 +13,9 @@ export class Route extends Base {
   @Column({ unique: true })
   route: string;
 
+  @Column()
+  method: string; // POST GET PATCH DELETE
+
   @ManyToMany(() => Permission)
   @JoinTable({
     name: "route_permissions",

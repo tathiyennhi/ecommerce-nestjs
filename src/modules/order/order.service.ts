@@ -121,10 +121,12 @@ export class OrderService {
         shipping_method: shippingMethod,
         cart: foundCart.data,
       });
-      await this.repository.save(neww);
+      // await this.repository.save(neww);
+      await queryRunner.manager.save(neww);
+      await queryRunner.commitTransaction();
       return new Result(Status.SUCCESS, neww, null);
     } catch (error) {
-      await queryRunner.rollbackTransaction();
+      // await queryRunner.rollbackTransaction();
       return new Result(
         Status.ERROR,
         null,

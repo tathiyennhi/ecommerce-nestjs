@@ -9,11 +9,13 @@ import {
   Logger,
   Inject,
   InternalServerErrorException,
+  UseGuards,
 } from "@nestjs/common";
 import { MenuService } from "./menu.service";
 import { CreateMenuDto } from "./dto/create-menu.dto";
 import { UpdateMenuDto } from "./dto/update-menu.dto";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
+import { RouteGuard } from "src/common/guards/route-guard";
 
 @Controller("menu")
 export class MenuController {
@@ -22,6 +24,7 @@ export class MenuController {
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
+  @UseGuards(RouteGuard)
   @Post()
   async create(@Body() createMenuDto: CreateMenuDto) {
     // this.logger.error("testtt");

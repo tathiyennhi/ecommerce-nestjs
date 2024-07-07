@@ -20,6 +20,11 @@ import { CartItemModule } from "./modules/cart-item/cart-item.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import typeorm from "./common/config/typeorm";
 import winstonConfig from "./common/config/winston";
+import { RoleModule } from "./modules/role/role.module";
+import { PermissionModule } from "./modules/permission/permission.module";
+import { RouteModule } from "./modules/route/route.module";
+import { AdminModule } from "./modules/admin/admin.module";
+import { RouteService } from "./modules/route/route.service";
 
 config();
 
@@ -52,6 +57,10 @@ config();
     CartModule,
     OrderModule,
     CartItemModule,
+    RoleModule,
+    PermissionModule,
+    RouteModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

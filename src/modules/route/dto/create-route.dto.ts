@@ -6,4 +6,7 @@ export class CreateRouteDto {
 
   @IsString()
   route: string;
+
+  @IsString()
+  method: string;
 }

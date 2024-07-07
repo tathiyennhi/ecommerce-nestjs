@@ -12,7 +12,7 @@ import {
 import { AuthService } from "./auth.service";
 import { CreateAuthDto } from "./dto/create-auth.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
-import { LoginDto } from "./dto/login-dto";
+import { AdminLoginDto, LoginDto } from "./dto/login-dto";
 import { LocalAuthGuard } from "./local-auth.guard";
 import { JwtAuthGuard } from "./jwt-auth.guard";
 import { AuthGuard } from "@nestjs/passport";
@@ -38,24 +38,29 @@ export class AuthController {
     return this.authService.signIn(dto);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @Post('/admin-login')
+  async adminLogin(@Body() dto: AdminLoginDto) {
+    return await this.authService.checkAdminLogin(dto.email, dto.password);
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.authService.findOne(+id);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get()
+  // findAll() {
+  //   return this.authService.findAll();
+  // }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
+  // @Get(":id")
+  // findOne(@Param("id") id: string) {
+  //   return this.authService.findOne(+id);
+  // }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.authService.remove(+id);
-  }
+  // @Patch(":id")
+  // update(@Param("id") id: string, @Body() updateAuthDto: UpdateAuthDto) {
+  //   return this.authService.update(+id, updateAuthDto);
+  // }
+
+  // @Delete(":id")
+  // remove(@Param("id") id: string) {
+  //   return this.authService.remove(+id);
+  // }
 }

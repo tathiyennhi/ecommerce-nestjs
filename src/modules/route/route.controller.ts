@@ -9,7 +9,6 @@ import {
 } from "@nestjs/common";
 import { RouteService } from "./route.service";
 import { CreateRouteDto } from "./dto/create-route.dto";
-import { UpdateRolePermissionRouteDto } from "./dto/update-route.dto";
 
 @Controller("route")
 export class RouteController {
@@ -30,13 +29,13 @@ export class RouteController {
     return this.routeService.findOne(id);
   }
 
-  @Patch(":id")
-  update(
-    @Param("id") id: string,
-    @Body() updateRolePermissionRouteDto: UpdateRolePermissionRouteDto,
-  ) {
-    return this.routeService.update(+id, updateRolePermissionRouteDto);
-  }
+  // @Patch(":id")
+  // update(
+  //   @Param("id") id: string,
+  //   @Body() updateRolePermissionRouteDto: UpdateRolePermissionRouteDto,
+  // ) {
+  //   return this.routeService.update(id, updateRolePermissionRouteDto);
+  // }
 
   @Delete(":id")
   remove(@Param("id") id: string) {

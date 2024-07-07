@@ -8,8 +8,8 @@ export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Post()
-  create(@Body() createPermissionDto: CreatePermissionDto) {
-    return this.permissionService.create(createPermissionDto);
+  async create(@Body() createPermissionDto: CreatePermissionDto) {
+    return await this.permissionService.create(createPermissionDto);
   }
 
   @Get()
@@ -19,7 +19,7 @@ export class PermissionController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.permissionService.findOne(+id);
+    return this.permissionService.findOne(id);
   }
 
   @Patch(':id')

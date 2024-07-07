@@ -7,16 +7,19 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 // import { UpdateProductDto } from "./dto/update-product.dto";
 import { PagingQueryDto } from "src/common/base-dtos/paging-query.dto";
+import { RouteGuard } from "src/common/guards/route-guard";
 
 @Controller("products")
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @UseGuards(RouteGuard)
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);

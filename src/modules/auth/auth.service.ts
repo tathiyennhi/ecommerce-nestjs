@@ -12,9 +12,16 @@ import { Result } from "src/common/service-result/result";
 import { Status } from "src/common/enums/service-status-code.enum";
 import { Utils } from "src/common/utils/utils";
 import { CreateUserDto } from "../user/dto/create-user.dto";
+import { AdminService } from "../admin/admin.service";
 
 @Injectable()
 export class AuthService {
+  constructor(
+    private jwtService: JwtService,
+    private usersService: UsersService,
+    private adminService: AdminService,
+  ) {}
+
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(username);
     if (user && user.password === Utils.md5Hash(password)) {
@@ -23,48 +30,7 @@ export class AuthService {
     return null;
   }
 
-  constructor(
-    // private usersService: UsersService,
-    private jwtService: JwtService,
-    private usersService: UsersService,
-  ) {}
-  create(createAuthDto: CreateAuthDto) {
-    return "This action adds a new auth";
-  }
-
-  // auth(dto: LoginDto) {
-  //   // get data user from db
-  //   const userName = "admin";
-  //   const pass = '123456'; // hashed
-  //   if (dto.name === userName && dto.password === pass) {
-  //     return "token-bearer";
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
   async signIn(dto: LoginDto) {
-    // get user by dto.username
-    // const user = {
-    //   username: "admin",
-    //   password: "123456"
-    // }
-
-    // if (!user) {
-    //   throw new UnauthorizedException();
-    // }
-
-    // @TODO: remove after using
-    // const md5Hash = crypto.createHash('md5').update(user.password).digest('hex');
-    // user.password = md5Hash;
-    // end TODO
-
-    //use md5 algorithm
-    // const isPasswordValid = this.compareMD5Hash(dto.password, user.password);
-    // if (!isPasswordValid) {
-    //   throw new UnauthorizedException('Invalid credentials');
-    // }
-
     const payload = { username: dto.username };
     return {
       access_token: await this.jwtService.signAsync(payload, {
@@ -72,25 +38,30 @@ export class AuthService {
       }),
     };
   }
-  // compareMD5Hash(password: string, hashedPassword: string): boolean {
-  //   const md5Hash = crypto.createHash('md5').update(password).digest('hex');
-  //   return md5Hash === hashedPassword;
-  // }
 
-  findAll() {
-    return `This action returns all auth`;
+  async checkAdminLogin(email: string, password: string) {
+    try {
+      const res = await this.adminService.check(email, Utils.md5Hash(password));
+      if (!res.data) {
+        return new Result(Status.ERROR, null, res?.message || "Admin not found");
+      }
+      const token = await this.jwtService.signAsync({email: res.data.email}, {
+        secret: process.env.TOKEN_KEY,
+      });
+      return new Result(Status.SUCCESS, token, null);
+    } catch (error) {
+      return new Result(Status.ERROR, null, "Something error, please check again!")
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  async extractToken(token: string) {
+    try {
+      const decodedToken = this.jwtService.verify(token);
+      const email = decodedToken.email;
+      return new Result(Status.SUCCESS, {email}, null);
+    } catch (error) {
+      return new Result(Status.SUCCESS, null, error?.message || "extract token fail");
+    }
   }
 
   async googleLogin(req) {

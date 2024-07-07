@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UseFilters,
+  UseGuards,
 } from "@nestjs/common";
 import { ChildProductService } from "./child-product.service";
 import { CreateChildProductDto } from "./dto/create-child-product.dto";
@@ -17,6 +18,7 @@ import { UpdateChildProductDto } from "./dto/update-child-product.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { MulterExceptionsFilter } from "src/common/exception-filters/multer-exception";
+import { RouteGuard } from "src/common/guards/route-guard";
 
 @Controller("child-product")
 export class ChildProductController {
@@ -43,6 +45,7 @@ export class ChildProductController {
     }),
   )
   @UseFilters(MulterExceptionsFilter)
+  @UseGuards(RouteGuard)
   @Post()
   async create(
     @Body() createChildProductDto: CreateChildProductDto,
@@ -71,6 +74,7 @@ export class ChildProductController {
       },
     }),
   )
+  @UseGuards(RouteGuard)
   @Post("update-image-link")
   @UseFilters(MulterExceptionsFilter)
   async uploadFile(
