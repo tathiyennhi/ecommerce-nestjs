@@ -1,4 +1,5 @@
 import {
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -10,15 +11,18 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Result } from "src/common/service-result/result";
 import { Status } from "src/common/enums/service-status-code.enum";
+import { WINSTON_MODULE_PROVIDER } from "nest-winston";
+import { Logger } from "winston";
 
 @Injectable()
 export class MenuService {
   constructor(
     @InjectRepository(Menu)
     private repository: Repository<Menu>,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
-  async create(createMenuDto: CreateMenuDto) {
+  async create(createMenuDto: CreateMenuDto, createdBy: string) {
     try {
       // Tạo mới Menu
       const newCategory = this.repository.create({
@@ -27,6 +31,8 @@ export class MenuService {
 
       // Lưu menu vào database
       await this.repository.save(newCategory);
+      this.logger.info(createMenuDto.name + " | " + createdBy);
+      // this.logger.error("TEstt error");
       return new Result(Status.SUCCESS, newCategory, null);
     } catch (error) {
       return new Result(

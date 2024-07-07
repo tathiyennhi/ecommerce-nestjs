@@ -24,7 +24,6 @@ import { RoleModule } from "./modules/role/role.module";
 import { PermissionModule } from "./modules/permission/permission.module";
 import { RouteModule } from "./modules/route/route.module";
 import { AdminModule } from "./modules/admin/admin.module";
-import { RouteService } from "./modules/route/route.service";
 
 config();
 

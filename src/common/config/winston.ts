@@ -4,7 +4,18 @@ import * as winston from "winston";
 
 dotenvConfig({ path: ".env" });
 
+// Hàm để lọc log dựa trên level
+const filterOnly = (level: string) => {
+  return winston.format((info) => {
+    if (info.level === level) {
+      return info;
+    }
+    return false;
+  })();
+};
+
 const config = {
+  level: "info",
   transports: [
     // Ghi log ra console
     new winston.transports.Console({
@@ -22,6 +33,7 @@ const config = {
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.json(), // Ghi log dưới định dạng JSON
+        filterOnly("info"),
       ),
     }),
     // Ghi log lỗi vào một file riêng

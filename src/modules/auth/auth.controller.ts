@@ -1,21 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Req,
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Req } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { CreateAuthDto } from "./dto/create-auth.dto";
-import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { AdminLoginDto, LoginDto } from "./dto/login-dto";
 import { LocalAuthGuard } from "./local-auth.guard";
-import { JwtAuthGuard } from "./jwt-auth.guard";
-import { AuthGuard } from "@nestjs/passport";
 import { GoogleAuthGuard } from "./google-auth.guard";
 
 @Controller("auth")
@@ -38,7 +24,7 @@ export class AuthController {
     return this.authService.signIn(dto);
   }
 
-  @Post('/admin-login')
+  @Post("/admin-login")
   async adminLogin(@Body() dto: AdminLoginDto) {
     return await this.authService.checkAdminLogin(dto.email, dto.password);
   }

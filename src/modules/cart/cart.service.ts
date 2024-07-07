@@ -103,7 +103,7 @@ export class CartService {
     try {
       const found = await this.repository.findOne({
         where: {
-          id: updateCartDto.cartId
+          id: updateCartDto.cartId,
         },
       });
       if (!found) {

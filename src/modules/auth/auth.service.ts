@@ -43,14 +43,25 @@ export class AuthService {
     try {
       const res = await this.adminService.check(email, Utils.md5Hash(password));
       if (!res.data) {
-        return new Result(Status.ERROR, null, res?.message || "Admin not found");
+        return new Result(
+          Status.ERROR,
+          null,
+          res?.message || "Admin not found",
+        );
       }
-      const token = await this.jwtService.signAsync({email: res.data.email}, {
-        secret: process.env.TOKEN_KEY,
-      });
+      const token = await this.jwtService.signAsync(
+        { email: res.data.email },
+        {
+          secret: process.env.TOKEN_KEY,
+        },
+      );
       return new Result(Status.SUCCESS, token, null);
     } catch (error) {
-      return new Result(Status.ERROR, null, "Something error, please check again!")
+      return new Result(
+        Status.ERROR,
+        null,
+        "Something error, please check again!",
+      );
     }
   }
 
@@ -58,9 +69,13 @@ export class AuthService {
     try {
       const decodedToken = this.jwtService.verify(token);
       const email = decodedToken.email;
-      return new Result(Status.SUCCESS, {email}, null);
+      return new Result(Status.SUCCESS, { email }, null);
     } catch (error) {
-      return new Result(Status.SUCCESS, null, error?.message || "extract token fail");
+      return new Result(
+        Status.ERROR,
+        null,
+        error?.message || "extract token fail",
+      );
     }
   }
 

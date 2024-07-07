@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  BadRequestException,
   UseGuards,
 } from "@nestjs/common";
 import { CategoryService } from "./category.service";

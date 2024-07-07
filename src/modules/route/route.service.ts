@@ -184,7 +184,8 @@ export class RouteService {
   async findByRouteName(route: string, method: string) {
     try {
       const found = await this.repository.findOne({
-        where: { route, method }, relations: ['roles', 'permissions']
+        where: { route, method },
+        relations: ["roles", "permissions"],
       });
       if (!found) {
         return new Result(Status.ERROR, null, "Route not found");

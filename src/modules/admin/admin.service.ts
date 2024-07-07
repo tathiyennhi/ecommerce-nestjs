@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAdminDto } from './dto/create-admin.dto';
-import { UpdateAdminDto } from './dto/update-admin.dto';
-import { Admin } from './entities/admin.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Result } from 'src/common/service-result/result';
-import { Status } from 'src/common/enums/service-status-code.enum';
+import { Injectable } from "@nestjs/common";
+import { CreateAdminDto } from "./dto/create-admin.dto";
+import { UpdateAdminDto } from "./dto/update-admin.dto";
+import { Admin } from "./entities/admin.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Result } from "src/common/service-result/result";
+import { Status } from "src/common/enums/service-status-code.enum";
 
 @Injectable()
 export class AdminService {
@@ -16,7 +16,7 @@ export class AdminService {
   ) {}
 
   create(createAdminDto: CreateAdminDto) {
-    return 'This action adds a new admin';
+    return "This action adds a new admin";
   }
 
   findAll() {
@@ -27,25 +27,34 @@ export class AdminService {
     try {
       const found = await this.repository.findOne({
         where: {
-          email, password
-        }
-      })
+          email,
+          password,
+        },
+      });
       return new Result(Status.SUCCESS, found, null);
     } catch (error) {
-      return new Result(Status.ERROR, null, error?.message || "check admin fail" );      
+      return new Result(
+        Status.ERROR,
+        null,
+        error?.message || "check admin fail",
+      );
     }
   }
   async findAdmin(email: string) {
     try {
       const found = await this.repository.findOne({
         where: {
-          email
+          email,
         },
-        relations: ['roles', 'permissions']
-      })
+        relations: ["roles", "permissions"],
+      });
       return new Result(Status.SUCCESS, found, null);
     } catch (error) {
-      return new Result(Status.ERROR, null, error?.message || "check admin fail" );      
+      return new Result(
+        Status.ERROR,
+        null,
+        error?.message || "check admin fail",
+      );
     }
   }
 

@@ -1,19 +1,19 @@
 import { IsOptional, IsString } from "class-validator";
 
 export class CreateOrderDto {
-    @IsString()
-    shippingMethod: string;
-    
-    @IsString()
-    userId: string;
+  @IsString()
+  shippingMethod: string;
 
-    @IsString()
-    paymentMethod: string;
+  @IsString()
+  userId: string;
 
-    @IsString()
-    cartId: string;
+  @IsString()
+  paymentMethod: string;
 
-    @IsString()
-    @IsOptional()
-    voucherId: string;
+  @IsString()
+  cartId: string;
+
+  @IsString()
+  @IsOptional()
+  voucherId: string;
 }

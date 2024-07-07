@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { DataSource, Repository } from "typeorm";
 import { Result } from "src/common/service-result/result";
@@ -7,6 +7,7 @@ import { Order } from "./entities/order.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CartService } from "../cart/cart.service";
 import { ChildProductService } from "../child-product/child-product.service";
+import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 
 @Injectable()
 export class OrderService {
@@ -16,6 +17,7 @@ export class OrderService {
     private repository: Repository<Order>,
     private cartService: CartService,
     private childProductService: ChildProductService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<Result> {
@@ -23,12 +25,12 @@ export class OrderService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
+    const { cartId, shippingMethod, paymentMethod, userId } = createOrderDto;
     try {
-      const { cartId, shippingMethod, paymentMethod, userId } = createOrderDto;
-
       // tìm cart
       const foundCart = await this.cartService.findActiveCart(userId);
       if (!foundCart.data) {
+        this.logger.error("Cart invalid", cartId, "create Order");
         await queryRunner.rollbackTransaction();
         return new Result(Status.ERROR, null, "Cart invalid");
       }
@@ -36,6 +38,11 @@ export class OrderService {
       // check cartId vs foundCart.cart_id
       if (cartId !== foundCart.data.cart_id) {
         await queryRunner.rollbackTransaction();
+        this.logger.error(
+          "Create order ERROR, cartId is wrong, rollback",
+          cartId,
+          "create Order",
+        );
         return new Result(
           Status.ERROR,
           null,
@@ -53,6 +60,12 @@ export class OrderService {
           cartItem.data.child_product.id,
         );
         if (!childProduct.data) {
+          this.logger.error(
+            "Create order ERROR, there are some error when getting cartItem, rollback" +
+              childProduct.message,
+            cartId,
+            "create Order",
+          );
           return new Result(
             Status.ERROR,
             null,
@@ -73,6 +86,11 @@ export class OrderService {
       // -> thông báo số lượng còn lại không đủ, user có muốn chỉnh lại số lượng không
       if (itemQuantityStatus.length > 0) {
         await queryRunner.rollbackTransaction();
+        this.logger.error(
+          "Shop hiện tại không đủ số lượng hàng bạn cần, bạn cập nhật lại giỏ hàng giúp shop với nha, hoặc liên hệ qua kênh chat hoặc sdt để được hỗ trợ, đã phiền bạn rồi, shop xin lỗi nha.",
+          cartId,
+          "create Order",
+        );
         return new Result(
           Status.ERROR,
           null,
@@ -89,6 +107,12 @@ export class OrderService {
         if (!updateQttRes.data) {
           await queryRunner.rollbackTransaction();
           // @TODO: add Logger
+          this.logger.error(
+            "Lỗi khi cập nhật số lượng hàng trong kho | " +
+              updateQttRes.message,
+            cartId,
+            "create Order",
+          );
           return new Result(
             Status.ERROR,
             null,
@@ -109,6 +133,11 @@ export class OrderService {
       if (updateCartRes.status === Status.ERROR) {
         await queryRunner.rollbackTransaction();
         // @TODO: add Logger
+        this.logger.error(
+          "Lỗi khi cập nhật trạng thái giỏ hàng",
+          cartId,
+          "create Order",
+        );
         return new Result(
           Status.ERROR,
           null,
@@ -124,9 +153,15 @@ export class OrderService {
       // await this.repository.save(neww);
       await queryRunner.manager.save(neww);
       await queryRunner.commitTransaction();
+      this.logger.log("Order created successfully");
       return new Result(Status.SUCCESS, neww, null);
     } catch (error) {
       // await queryRunner.rollbackTransaction();
+      this.logger.error(
+        "Create order ERROR in CATCH, rollback",
+        cartId,
+        "create Order",
+      );
       return new Result(
         Status.ERROR,
         null,

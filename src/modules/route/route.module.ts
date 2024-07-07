@@ -11,6 +11,6 @@ import { PermissionModule } from "../permission/permission.module";
   controllers: [RouteController],
   providers: [RouteService],
   imports: [TypeOrmModule.forFeature([Route]), RoleModule, PermissionModule],
-  exports: [RouteService]
+  exports: [RouteService],
 })
 export class RouteModule {}
